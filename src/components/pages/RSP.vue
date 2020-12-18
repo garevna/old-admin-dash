@@ -38,10 +38,6 @@ export default {
   props: [],
 
   components: {
-    // Button,
-    // RSPBtnGroup: () => import('@/layouts/RSP/RSPBtnGroup'),
-    // ClientsOfReseller,
-    // EndCustomers,
     Menu: () => import('@/components/Menu'),
     Resellers: () => import('@/components/pages/rsp/Resellers'),
     Reseller: () => import('@/components/pages/rsp/Reseller'),
@@ -49,7 +45,7 @@ export default {
     Payments: () => import('@/components/pages/rsp/Payments'),
     Receivables: () => import('@/components/pages/rsp/Receivables'),
     Bills: () => import('@/components/pages/rsp/Bills'),
-    EndCustomers: () => import('@/components/EndCustomers')
+    EndCustomers: () => import('@/components/pages/EndCustomers')
   },
 
   data: () => ({

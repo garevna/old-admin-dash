@@ -77,7 +77,7 @@ const actions = {
     console.log(response)
 
     if (!response.error) {
-      commit('SERVICES', response.services)
+      commit('SERVICES', response.data)
       commit('MESSAGE', {
         message: true,
         messageType: 'Add new service',

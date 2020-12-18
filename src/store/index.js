@@ -51,7 +51,7 @@ export default new Vuex.Store({
       const response = await getData('reseller')
 
       if (!response.error) {
-        commit('UPDATE_RSP', response.resellers)
+        commit('UPDATE_RSP', response.data)
       } else {
         commit('ERROR', {
           error: true,

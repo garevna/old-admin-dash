@@ -44,7 +44,7 @@ const actions = {
     console.log('address requests:\n', response)
 
     if (!response.error) {
-      const tickets = response[state.dataName]
+      const tickets = response.data
         .map(item => Object.assign({}, item, {
           createdAt: item.createdAt ? (new Date(item.createdAt - 0)).toISOString().slice(0, 10) : '',
           footprint: item.locatedInPolygon,
