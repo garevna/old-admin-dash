@@ -1,17 +1,28 @@
 {
-  "name": "admin-main-dash",
-  "description": "DGtek Portal: admin dashboard main app",
+  "name": "dgtek-supervisor-dash",
   "version": "1.0.0",
+  "description": "Supervisor dashboard for DGtek Portal project",
+  "author": "garevna <irina.h.fylyppova@gmail.com>",
+  "keywords": [
+    "dgtek",
+    "portal",
+    "supervisor",
+    "dashboard"
+  ],
+  "repository": "https://github.com/garevna/portal-admin-dash.git",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "start": "node server.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "core-js": "^3.8.1",
     "cryptico": "^1.0.2",
     "dgtek-styles": "^0.0.8",
     "vue": "^2.6.11",
+    "vue-youtube-embed": "^2.2.2",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
   },

@@ -7,13 +7,14 @@
         </v-toolbar-title>
         <v-spacer />
         <Menu :options="menuOptions" :goto.sync="goto" />
+        <!-- <VideoTutorials /> -->
       </v-toolbar>
     </v-app-bar>
 
     <v-container>
       <Services v-if="goto === 'services'" />
       <ServiceOrders v-if="goto === 'orders'" />
-      <Wells v-if="goto === 'wells'" />
+      <!-- <Wells v-if="goto === 'wells'" /> -->
     </v-container>
   </div>
 </template>
@@ -25,10 +26,10 @@ export default {
   props: [],
 
   components: {
-    Menu: () => import('@/components/Menu'),
-    Services: () => import('@/components/Services'),
-    ServiceOrders: () => import('@/components/ServiceOrders'),
-    Wells: () => import('@/views/Wells')
+    Menu: () => import('@/components/Menu.vue'),
+    Services: () => import('@/components/pages/other/Services.vue'),
+    ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue')
+    // VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
   },
 
   data: () => ({
