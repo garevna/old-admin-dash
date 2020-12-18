@@ -19,7 +19,7 @@ const actions = {
     console.log('common:\n', response)
 
     if (!response.error) {
-      const tickets = response.ticketsCommon
+      const tickets = response.data
         .map(item => Object.assign({}, item, {
           createdAt: item.createdAt ? (new Date(item.createdAt - 0)).toISOString().slice(1, 10) : ''
         }))

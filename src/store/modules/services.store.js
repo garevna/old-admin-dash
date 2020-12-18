@@ -22,7 +22,7 @@ const actions = {
 
     if (!response.error) {
       const services = {}
-      for (const record of response.services) {
+      for (const record of response.data) {
         const id = record._id
         const service = {}
         for (const key in state.serviceSchema) {

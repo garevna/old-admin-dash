@@ -1,8 +1,8 @@
 <template>
   <v-container class="homefone">
     <v-row justify="center">
-      <v-col cols="12" md="6" lg="4">
-        <v-card flat class="transparent">
+      <v-col cols="12" md="6" lg="6">
+        <v-card class="transparent">
           <v-toolbar flat>
             <!-- <v-toolbar-title>
               Services
@@ -52,7 +52,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="6" lg="4">
+      <v-col cols="12" md="6" lg="6">
         <ServiceForm
           v-if="currentServiceId"
           :id="currentServiceId"
@@ -119,5 +119,9 @@ export default {
 <style scoped>
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th,
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > td, .v-data-table > .v-data-table__wrapper > table > thead > tr > td, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td{
+  font-size: 16px;
+}
 </style>
