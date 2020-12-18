@@ -1,0 +1,60 @@
+const { getData, patchData } = require('@/helpers').default
+
+const state = {
+  tickets: [],
+  ticketsError: null,
+  ticketsLoading: false
+}
+
+const mutations = {
+  TICKETS: (state, payload) => {
+    state.tickets = payload
+  }
+}
+
+const actions = {
+  async GET_TICKETS ({ getters, commit, dispatch }) {
+    const response = await getData('ticket/common')
+
+    console.log('common:\n', response)
+
+    if (!response.error) {
+      const tickets = response.ticketsCommon
+        .map(item => Object.assign({}, item, {
+          createdAt: item.createdAt ? (new Date(item.createdAt - 0)).toISOString().slice(1, 10) : ''
+        }))
+      commit('TICKETS', tickets)
+    } else {
+      commit('ERROR', {
+        error: true,
+        errorType: 'Reading common tikets',
+        errorMessage: 'Process failed...'
+      }, { root: true })
+    }
+  },
+
+  async SEND_MESSAGE (context, payload) {
+    const response = await patchData(`ticket/common/${payload.id}`, payload.historyElement)
+    if (response.error) {
+      context.commit('ERROR', {
+        error: true,
+        errorType: 'Sending message error',
+        errorMessage: 'Message has not been delivered...'
+      }, { root: true })
+    } else {
+      context.commit('MESSAGE', {
+        message: true,
+        messageType: 'Sending message',
+        messageText: 'Message has been delivered'
+      }, { root: true })
+    }
+    return response
+  }
+}
+
+export default {
+  namespaced: true,
+  state,
+  actions,
+  mutations
+}

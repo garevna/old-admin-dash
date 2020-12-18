@@ -1,0 +1,92 @@
+<template>
+  <div>
+    <v-app-bar app elevate-on-scroll>
+      <v-toolbar flat class="transparent">
+        <v-toolbar-title>
+          Jobs
+        </v-toolbar-title>
+        <v-spacer />
+        <Menu :options="menuOptions" :goto.sync="goto" />
+      </v-toolbar>
+    </v-app-bar>
+
+    <v-container>
+      <Services v-if="goto === 'services'" :params="params" />
+      <ServiceOrders v-if="goto === 'orders'" :params="params" />
+      <Wells v-if="goto === 'wells'" :params="params" />
+    </v-container>
+  </div>
+</template>
+
+<script>
+// import Button from '@/components/Button'
+
+export default {
+  name: 'OtherLayout',
+  props: [],
+
+  components: {
+    // Button,
+    Menu: () => import('@/components/menu/Menu'),
+    Services: () => import('@/components/Services'),
+    ServiceOrders: () => import('@/components/ServiceOrders'),
+    Wells: () => import('@/views/Wells')
+  },
+
+  data: () => ({
+    // menuOptions: require('@/components/menu/menu-options-for-other-layout.json'),
+    menuOptions: [
+      {
+        text: 'Services',
+        value: 'services'
+      },
+      {
+        text: 'Service Orders',
+        value: 'orders'
+      },
+      {
+        text: 'Buildings API',
+        value: 'buildings'
+      },
+      {
+        text: 'Pits API',
+        value: 'wells'
+      }
+    ],
+    goto: null,
+    name: '',
+    params: null
+  }),
+
+  watch: {
+    goto (val) {
+      console.log(val)
+      if (val === 'buildings') {
+        window.open('https://garevna.github.io/dgtek-buildings-api/')
+      }
+    }
+  },
+
+  methods: {
+    // goto (obj) {
+    //   this.$otherLayoutRouter.to(obj)
+    // },
+    // show (name) {
+    //   return this.name === name
+    // },
+    // callBack ({ name, params }) {
+    //   this.name = name
+    //   this.params = params
+    // }
+  }
+  // created () {
+  //   this.$otherLayoutRouter.addListener(this.callBack)
+  //   this.to({ name: 'Services' })
+  //   this.params = this.$otherLayoutRouter.getParams()
+  //   this.name = this.$otherLayoutRouter.getRouteName()
+  // },
+  // destroyed () {
+  //   this.$otherLayoutRouter.removeListener(this.callBack)
+  // }
+}
+</script>
