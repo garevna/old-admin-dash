@@ -4,9 +4,6 @@
       <v-col cols="12" md="6" lg="4">
         <v-card flat class="transparent">
           <v-toolbar flat>
-            <!-- <v-toolbar-title>
-              Services
-            </v-toolbar-title> -->
             <v-spacer />
             <v-btn icon @click="newService">
               <v-icon>$add</v-icon>
