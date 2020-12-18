@@ -1,6 +1,8 @@
 # DGtek portal: admin dashboard
 
-[**demo**](https://vue-command.github.io/dgtek-admin-cabinet/)
+###### Supervisor dashboard for DGtek Portal project
+
+[**demo**](https://garevna.github.io/portal-admin-dash/)
 
 ## Project setup
 
