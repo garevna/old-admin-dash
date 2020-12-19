@@ -1,5 +1,5 @@
 <template>
-  <v-card class="transparent" v-if="edited">
+  <v-card class="white pb-4 mb-10" v-if="edited">
     <v-toolbar flat>
       <v-toolbar-title>
         <v-icon>$edit</v-icon> {{ edited.serviceName.value }}
@@ -13,7 +13,52 @@
         <v-icon>$close</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-card-text>
+    <v-card-text
+      class="pa-0"
+      v-for="item in service"
+      :key="item.label"
+    >
+      <v-col
+        v-if="item.type==='string'"
+      >
+        <v-text-field
+          :value="item.value"
+          :label="item.label"
+          v-model="item.value"
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-col>
+      <v-col
+        v-if="item.type==='number'"
+      >
+        <v-text-field
+          :value="item.value"
+          :label="item.label"
+          v-model="item.value"
+          :rules="[rules.onlyDigits]"
+        ></v-text-field>
+      </v-col>
+      <v-col
+        v-if="item.type==='boolean'"
+      >
+        <v-checkbox
+          :value="item.value"
+          :label="item.label"
+          v-model="item.value"
+        ></v-checkbox>
+      </v-col>
+      <v-col
+        v-if="item.type==='file'"
+      >
+        <v-file-input
+          :label="item.label"
+          prepend-icon="$upload"
+          v-model="sla"
+        ></v-file-input>
+        <ShowPDF :fileData="item.value" />
+      </v-col>
+    </v-card-text>
+    <!--<v-card-text>
       <v-text-field label="Service Name" v-model="edited.serviceName.value" />
     </v-card-text>
     <v-card-text>
@@ -98,7 +143,7 @@
     </v-card-text>
     <v-card-text>
       <v-text-field label="GST inc ex" v-model="edited.gstIncEx.value" />
-    </v-card-text>
+    </v-card-text> -->
   </v-card>
 </template>
 
@@ -200,7 +245,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .v-select > .v-input__control > .v-input__slot {
   border: unset;
   height: unset;
