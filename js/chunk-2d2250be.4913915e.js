@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d2250be"],{e371:function(e,n,t){"use strict";t.r(n);var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("v-card",{staticClass:"transparent ma-4",attrs:{flat:""}},[t("h4",[e._v("End customers")])])},s=[],r={name:"ClientsOfReseller"},l=r,c=t("2877"),u=t("6544"),i=t.n(u),o=t("b0af"),d=Object(c["a"])(l,a,s,!1,null,null,null);n["default"]=d.exports;i()(d,{VCard:o["a"]})}}]);
+//# sourceMappingURL=chunk-2d2250be.4913915e.js.map

@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d21d4c0"],{d163:function(a,n,t){"use strict";t.r(n);var r=function(){var a=this,n=a.$createElement,t=a._self._c||n;return t("v-card",{staticClass:"transparent ma-4",attrs:{flat:""}},[t("h4",[a._v("Traffic")])])},c=[],e={name:"Traffic"},s=e,l=t("2877"),f=t("6544"),u=t.n(f),i=t("b0af"),d=Object(l["a"])(s,r,c,!1,null,null,null);n["default"]=d.exports;u()(d,{VCard:i["a"]})}}]);
+//# sourceMappingURL=chunk-2d21d4c0.c4e9ae10.js.map
