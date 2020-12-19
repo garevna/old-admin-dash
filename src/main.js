@@ -2,15 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import VueYouTubeEmbed from 'vue-youtube-embed'
 
 import ErrorMessage from '@/components/popups/error.vue'
 import Message from '@/components/popups/message.vue'
 
 import 'dgtek-styles/css/fonts.scss'
 import 'dgtek-styles/css/variables.scss'
-
-Vue.use(VueYouTubeEmbed)
 
 Vue.config.productionTip = false
 

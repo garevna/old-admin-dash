@@ -60,3 +60,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+td, th {
+  color: #fff !important;
+}
+</style>

@@ -62,7 +62,7 @@
 
 <script>
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, /* mapMutations, */ mapActions } from 'vuex'
 
 export default {
   name: 'Services',
@@ -71,54 +71,52 @@ export default {
   },
   data: () => ({
     currentServiceId: null,
-    currentService: null,
-    openDetailInfo: false,
-    showEdit: false
+    currentService: null
   }),
   props: [],
   computed: {
     ...mapState('services', ['services'])
   },
   watch: {
-    currentService: {
+    services: {
+      immediate: true,
       deep: true,
       handler (val) {
-        console.log('CURRENT SERVICE CHANGED:\n', val)
+        console.log('SERVICES CHANGED\n', val)
       }
     }
   },
   methods: {
     ...mapActions('services', {
+      updateServices: 'UPDATE_SERVICES',
+      updateService: 'UPDATE_SERVICE',
       getAllServices: 'GET_SERVICES',
-      createNewService: 'ADD_NEW_SERVICE'
+      createNewService: 'CREATE_SERVICE',
+      deleteService: 'DELETE_SERVICE'
     }),
-    newService () {
-      console.log('Create')
+    async newService () {
+      const { id, service } = await this.createNewService()
+      console.log(id, service)
+      console.log(Object.keys(this.services))
     },
     edit (item, id) {
       console.log(id)
       console.log(item)
+      if (!id || !item) return
       this.currentServiceId = id
       this.currentService = item
     },
-    remove (item, id) {
-      console.log(id)
-      console.log(item)
+    async remove (item, id) {
+      if (this.currentServiceId === id) {
+        this.currentServiceId = null
+        this.currentService = null
+      }
+      await this.deleteService(id)
+      console.log(Object.keys(this.services))
     }
   },
   created () {
     this.getAllServices()
-  },
-  mounted () {}
+  }
 }
 </script>
-
-<style scoped>
-</style>
-
-<style lang="scss" scoped>
-.v-data-table > .v-data-table__wrapper > table > thead > tr > th,
-.v-data-table > .v-data-table__wrapper > table > tbody > tr > td, .v-data-table > .v-data-table__wrapper > table > thead > tr > td, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td{
-  font-size: 16px;
-}
-</style>

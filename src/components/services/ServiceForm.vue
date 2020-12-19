@@ -18,24 +18,13 @@
       v-for="item in service"
       :key="item.label"
     >
-      <v-col
-        v-if="item.type==='string'"
-      >
+      <v-col>
         <v-text-field
           :value="item.value"
           :label="item.label"
           v-model="item.value"
-          :rules="[rules.required]"
-        ></v-text-field>
-      </v-col>
-      <v-col
-        v-if="item.type==='number'"
-      >
-        <v-text-field
-          :value="item.value"
-          :label="item.label"
-          v-model="item.value"
-          :rules="[rules.onlyDigits]"
+          :rules="item.type==='number' ? [rules.onlyDigits] : [rules.required]"
+          dense
         ></v-text-field>
       </v-col>
       <v-col
@@ -58,92 +47,6 @@
         <ShowPDF :fileData="item.value" />
       </v-col>
     </v-card-text>
-    <!--<v-card-text>
-      <v-text-field label="Service Name" v-model="edited.serviceName.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="Service Type" v-model="edited.serviceType.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-file-input
-        label="service SLA"
-        v-model="sla"
-        prepend-icon="$upload"
-      />
-      <ShowPDF :fileData="edited.serviceSLA.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-textarea label="Service Description" v-model="edited.serviceDescription.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="downstream speed"
-        v-model="edited.downstreamSpeed.value"
-        :rules="[rules.onlyDigits]"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="upstream speed"
-        v-model="edited.upstreamSpeed.value"
-        :rules="[rules.onlyDigits]"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="Data Limit" v-model="edited.dataLimit.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="MRC"
-        v-model="edited.MRC.value"
-        :rules="[rules.onlyDigits]"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="NRC"
-        v-model="edited.NRC.value"
-        :rules="[rules.onlyDigits]"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="Equipment Cost"
-        v-model="edited.equipmentCost.value"
-        :rules="[rules.onlyDigits]"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-checkbox v-model="edited.equipmentRequired.value" label="Equipment Required" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="Equipment Type" v-model="edited.equipmentType.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="Contract Term" v-model="edited.contractTerm.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="Free Trial"
-        v-model="edited.freeTrial"
-        :rules="[rules.onlyDigits]"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="Discount on NRC" v-model="edited.discountOnNRC.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="Discount on MRC" v-model="edited.discountOnMRC.value" />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field
-        label="Number of Users per Parther"
-        v-model="edited.numberOfUsersPerPartner.value"
-      />
-    </v-card-text>
-    <v-card-text>
-      <v-text-field label="GST inc ex" v-model="edited.gstIncEx.value" />
-    </v-card-text> -->
   </v-card>
 </template>
 
@@ -194,7 +97,6 @@ export default {
   },
   methods: {
     ...mapActions('services', {
-      createService: 'ADD_NEW_SERVICE',
       updateService: 'UPDATE_SERVICE'
     }),
     ...mapMutations({
@@ -202,7 +104,6 @@ export default {
     }),
     async upload (file) {
       const response = await this._readFile(file)
-      console.log(response)
       if (response.error) {
         this.showErrorMessage({
           error: true,
@@ -215,39 +116,8 @@ export default {
       return response
     },
     async save () {
-      const formData = new FormData()
-      this.data.forEach(item => {
-        formData.set()
-      })
-      // const fd = new FormData()
-      // Object.entries(this.data).forEach(([name, value]) => {
-      //   if (value instanceof File) fd.append('file', value)
-      //   else if (value) fd.append(name, value)
-      //   fd.append(name, value)
-      // })
-      const res = await (
-        await fetch(!this.id ? `${process.env.VUE_APP_API_URL}/service` : `${process.env.VUE_APP_API_URL}/service/${this.id}`, {
-          method: this.id ? 'PUT' : 'POST',
-          body: JSON.stringify(this.data),
-          headers: {
-            'Content-type': 'application/json',
-            Authorization: process.env.VUE_APP_AUTHORIZATION_KEY
-          }
-        })
-      ).json()
-      if (!res.error) {
-        // this.$parent.replaceServiceId({ ...this.data, _id: this.id })
-        this.$parent.getServices()
-        this.$emit('update:showEdit', false)
-      }
+      this.updateService(this.id, this.service)
     }
   }
 }
 </script>
-
-<style scoped>
-.v-select > .v-input__control > .v-input__slot {
-  border: unset;
-  height: unset;
-}
-</style>
