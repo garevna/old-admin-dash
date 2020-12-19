@@ -21,7 +21,7 @@ const actions = {
     if (!response.error) {
       const tickets = response.data
         .map(item => Object.assign({}, item, {
-          createdAt: item.createdAt ? (new Date(item.createdAt - 0)).toISOString().slice(1, 10) : ''
+          createdAt: item.createdAt ? (new Date(item.createdAt - 0)).toISOString().slice(0, 10) : ''
         }))
       commit('TICKETS', tickets)
     } else {
@@ -34,7 +34,7 @@ const actions = {
   },
 
   async SEND_MESSAGE (context, payload) {
-    const response = await patchData(`ticket/common/${payload.id}`, payload.historyElement)
+    const response = await patchData(`ticket/common/set-history/${payload.id}`, payload.historyElement)
     if (response.error) {
       context.commit('ERROR', {
         error: true,
@@ -48,7 +48,6 @@ const actions = {
         messageText: 'Message has been delivered'
       }, { root: true })
     }
-    return response
   }
 }
 
