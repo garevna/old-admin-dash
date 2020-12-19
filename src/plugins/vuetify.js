@@ -8,10 +8,14 @@ export default new Vuetify({
     iconfont: 'mdi',
     values: {
       accounts: 'mdi-account-box-multiple',
+      archive: 'mdi-archive',
       add: 'mdi-note-plus',
       block: 'mdi-checkbox-blank',
       buildings: 'mdi-home-city-outline',
       case: 'mdi-briefcase-variant',
+      common: 'mdi-ballot',
+      connection: 'mdi-cast-connected',
+      connectivity: 'mdi-connection',
       customers: 'mdi-text-account',
       diagnostics: 'mdi-marker-check',
       edit: 'mdi-pencil',
@@ -28,13 +32,18 @@ export default new Vuetify({
       marker: 'mdi-map-marker',
       menu: 'mdi-dots-vertical',
       message: 'mdi-message-reply-text',
+      orders: 'mdi-printer',
       other: 'mdi-folder-table',
       pdf: 'mdi-file-pdf',
+      registration: 'mdi-account-plus',
       rightArrow: 'mdi-arrow-right-bold',
       save: 'mdi-content-save',
       send: 'mdi-send',
+      services: 'mdi-apps-box',
       tickets: 'mdi-card-text',
-      upload: 'mdi-file-upload'
+      tutorials: 'mdi-file-video',
+      upload: 'mdi-file-upload',
+      window: 'mdi-open-in-new'
     }
   },
   theme: {

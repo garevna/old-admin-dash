@@ -1,45 +1,79 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-app-bar app elevate-on-scroll>
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
-          {{ title }}
+          <h5>{{ title }}</h5>
         </v-toolbar-title>
-        <v-spacer />
-        <Menu :options="menuOptions" :goto.sync="goto" />
-        <!-- <VideoTutorials /> -->
+        <v-spacer></v-spacer>
+        <v-tooltip
+          bottom
+          color="primary"
+          v-for="(item, index) in menuOptions"
+          :key="index"
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              :color="goto !== item.value ? '#333' : 'primary'"
+              dark
+              v-on="on"
+              @click="goto = item.value"
+            >
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ item.text }}</span>
+        </v-tooltip>
+        <!-- <Menu :options="menuOptions" :goto.sync="goto" /> -->
       </v-toolbar>
     </v-app-bar>
 
-    <v-container>
+    <v-row justify="center">
+      <VideoTutorials v-if="goto === 'tutorials'" />
       <Services v-if="goto === 'services'" />
       <ServiceOrders v-if="goto === 'orders'" />
-      <!-- <Wells v-if="goto === 'wells'" /> -->
-    </v-container>
-  </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 
 export default {
   name: 'Other',
-  props: [],
 
   components: {
-    Menu: () => import('@/components/Menu.vue'),
+    // Menu: () => import('@/components/Menu.vue'),
     Services: () => import('@/components/pages/other/Services.vue'),
-    ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue')
-    // VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
+    ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue'),
+    VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
   },
 
   data: () => ({
     menuOptions: [
-      { text: 'Services', value: 'services' },
-      { text: 'Service Orders', value: 'orders' },
-      { text: 'Buildings API', value: 'buildings' },
-      { text: 'Pits API', value: 'wells' }
+      {
+        text: 'Video Tutorials',
+        value: 'tutorials',
+        icon: '$tutorials'
+      },
+      {
+        text: 'Services',
+        value: 'services',
+        icon: '$services'
+      },
+      {
+        text: 'Service Orders',
+        value: 'orders',
+        icon: '$orders'
+      }
     ],
-    goto: 'sevices'
+    // menuOptions: [
+    //   { text: 'Video Tutorials', value: 'tutorials' },
+    //   { text: 'Services', value: 'services' },
+    //   { text: 'Service Orders', value: 'orders' },
+    //   { text: 'Pits API', value: 'wells' }
+    // ],
+    goto: 'services'
   }),
 
   computed: {

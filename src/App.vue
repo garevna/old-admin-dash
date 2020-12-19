@@ -25,8 +25,8 @@
       </v-btn>
 
       <v-btn value="buildings" @click="redirectToBuildingsAPI">
-        <span>Buildings API</span>
-        <v-icon>$buildings</v-icon>
+        <span>Buildings</span>
+        <v-icon>$window</v-icon>
       </v-btn>
 
       <v-btn value="other">

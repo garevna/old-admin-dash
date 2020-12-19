@@ -79,15 +79,6 @@
           outlined
         ></v-select>
       </v-card-text>
-      <!-- <v-card-actions>
-        <v-spacer />
-        <v-btn dark color="primary" @click="accept">
-          Accept
-        </v-btn>
-        <v-btn dark color="primary" @click="reject">
-          Reject
-        </v-btn>
-      </v-card-actions> -->
     </v-card>
   </v-card>
 </template>
@@ -149,3 +140,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+td, th {
+  color: #fff !important;
+}
+</style>

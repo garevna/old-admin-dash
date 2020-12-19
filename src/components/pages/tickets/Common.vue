@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="6">
         <v-card flat class="transparent">
-          <Table :data="tickets" :options="options" :callBack="callBack" />
+          <!-- <Table :data="tickets" :options="options" :callBack="callBack" /> -->
         </v-card>
       </v-col>
       <v-col cols="12" md="6">
@@ -14,13 +14,13 @@
           >
             Settings
           </p>
-          <v-divider></v-divider> -->
-          <!-- <TableDetail :data="currentTicket" :options="detailInfo" /> -->
-          <!-- <v-card-actions class="d-flex justify-center">
+          <v-divider></v-divider>
+          <TableDetail :data="currentTicket" :options="detailInfo" /> -->
+          <v-card-actions class="d-flex justify-center">
             <v-btn text> accept </v-btn>
             <v-btn text> reject </v-btn>
             <v-btn text> send </v-btn>
-          </v-card-actions> -->
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -29,7 +29,7 @@
 <script>
 import { mapState } from 'vuex'
 
-import Table from '@/components/table/Table'
+// import Table from '@/components/table/Table'
 import CommonDetails from '@/components/pages/tickets/CommonDetails.vue'
 // import TicketDetail from '@/components/table/TicketDetail.vue'
 
@@ -38,7 +38,7 @@ export default {
   props: ['accept', 'reject', 'send'],
 
   components: {
-    Table,
+    // Table,
     CommonDetails
     // TicketDetail
   },

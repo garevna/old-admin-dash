@@ -6,23 +6,40 @@
           {{ currentType }}
         </v-toolbar-title>
         <v-spacer />
-        <Menu :options="menuOptions" :goto.sync="goto" />
+        <v-tooltip
+          bottom
+          color="primary"
+          v-for="(item, index) in menuOptions"
+          :key="index"
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              :color="goto !== item.value ? '#333' : 'primary'"
+              dark
+              v-on="on"
+              @click="goto = item.value"
+            >
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ item.text }}</span>
+        </v-tooltip>
+        <!-- <Menu :options="menuOptions" :goto.sync="goto" /> -->
       </v-toolbar>
     </v-app-bar>
 
     <v-card flat class="transparent">
       <LeadRequests v-if="goto === 'register'" />
-      <Common
-        v-if="goto === 'other'"
-        :params="params"
-        :accept.sync="acceptBtn"
-        :reject.sync="rejectBtn"
-        :send.sync="sendBtn"
-      />
+
       <ConnectAddress
         v-if="goto === 'connection-request' || goto === 'connectivity-research'"
         :type="goto"
       />
+
+      <CommonTikets v-if="goto === 'other'" />
+
+      <ArchiveTikets v-if="goto === 'other'" />
     </v-card>
   </v-container>
 </template>
@@ -30,41 +47,46 @@
 <script>
 
 export default {
-  name: 'TicketsLayout',
+  name: 'Tickets',
   props: [],
 
   components: {
-    Menu: () => import('@/components/Menu.vue'),
-    Common: () => import('@/components/pages/tickets/Common.vue'),
+    // Menu: () => import('@/components/Menu.vue'),
     LeadRequests: () => import('@/components/pages/tickets/LeadRequests.vue'),
-    ConnectAddress: () => import('@/components/pages/tickets/ConnectAddress.vue')
+    ConnectAddress: () => import('@/components/pages/tickets/ConnectAddress.vue'),
+    CommonTikets: () => import('@/components/pages/tickets/Common.vue'),
+    ArchiveTikets: () => import('@/components/pages/tickets/Archive.vue')
   },
 
   data: () => ({
     menuOptions: [
       {
         text: 'Leads requests',
-        value: 'register'
+        value: 'register',
+        icon: '$registration'
       },
       {
         text: 'Connection request',
-        value: 'connection-request'
+        value: 'connection-request',
+        icon: '$connection'
       },
       {
         text: 'Connectivity research',
-        value: 'connectivity-research'
+        value: 'connectivity-research',
+        icon: '$connectivity'
       },
       {
         text: 'Other requests',
-        value: 'other'
+        value: 'other',
+        icon: '$common'
+      },
+      {
+        text: 'Archive',
+        value: 'archive',
+        icon: '$archive'
       }
     ],
-    goto: 'register',
-    name: '',
-    params: null,
-    acceptBtn: false,
-    rejectBtn: false,
-    sendBtn: false
+    goto: 'register'
   }),
   computed: {
     currentType () {

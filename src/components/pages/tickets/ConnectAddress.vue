@@ -1,59 +1,59 @@
 <template>
-  <v-container style="max-width: 1440px">
-  <v-row>
-    <v-col cols="12" lg="6">
-      <v-card flat class="transparent my-2 mx-0">
-        <v-simple-table
-          fixed-header
-          height="75%"
-        >
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th style="width: 160px"> Date (created) </th>
-                <!-- <th style="width: 100px"> Apt.num </th> -->
-                <th style="width: 340px"> Address </th>
-                <th v-if="type === 'connection-request'">
-                  Footprint
-                </th>
-                <th v-if="type === 'connectivity-research'">
-                  Distance from footprint
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, index) in tickets"
-                :key="index"
-                @click="rowClickHandler(item._id)"
-              >
-                <td>{{ item.createdAt }}</td>
-                <!-- <td>{{ item.apartmentNumber }}</td> -->
-                <td>{{ item.address }}</td>
-                <td v-if="item.footprint">
-                  <v-checkbox
-                    :input-value="item.footprint"
-                    readonly
-                    color="#E82F37"
-                  ></v-checkbox>
-                </td>
-                <td v-if="!item.footprint" class="text-center">
-                  {{ `${Math.round(item.distanceFromFootprint) || ''} m` }}
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-card>
-    </v-col>
-    <v-col cols="12" lg="6">
-      <TicketDetails
-        :id.sync="currentTicketId"
-        :type="type"
-      />
-    </v-col>
-  </v-row>
-</v-container>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" md="6" lg="4">
+        <v-card flat class="transparent my-2 mx-0">
+          <v-simple-table
+            fixed-header
+            max-height="75%"
+          >
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th style="width: 160px"> Date (created) </th>
+                  <!-- <th style="width: 100px"> Apt.num </th> -->
+                  <th style="width: 340px"> Address </th>
+                  <th v-if="type === 'connection-request'">
+                    Footprint
+                  </th>
+                  <th v-if="type === 'connectivity-research'">
+                    Distance from footprint
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in tickets"
+                  :key="index"
+                  @click="rowClickHandler(item._id)"
+                >
+                  <td>{{ item.createdAt }}</td>
+                  <!-- <td>{{ item.apartmentNumber }}</td> -->
+                  <td>{{ item.address }}</td>
+                  <td v-if="item.footprint">
+                    <v-checkbox
+                      :input-value="item.footprint"
+                      readonly
+                      color="#E82F37"
+                    ></v-checkbox>
+                  </td>
+                  <td v-if="!item.footprint" class="text-center">
+                    {{ `${Math.round(item.distanceFromFootprint) || ''} m` }}
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6" lg="4">
+        <TicketDetails
+          :id.sync="currentTicketId"
+          :type="type"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -80,9 +80,7 @@ export default {
       return this.tickets.find(item => item._id === this.currentTicketId)
     },
     currentRSP () {
-      console.log(this.currentTicket.resellerId, this.rsp.find(item => item._id === this.currentTicket.resellerId))
-      const id = this.currentTicket.resellerId
-      return this.rsp.find(item => item._id === id) || {}
+      return this.rsp.find(item => item._id === this.currentTicket.resellerId) || {}
     }
   },
 
@@ -106,7 +104,6 @@ export default {
       sendMessage: 'SEND_MESSAGE_WITH_CURRENT_TICKET'
     }),
     rowClickHandler (id) {
-      console.log(id)
       this.currentTicketId = id
     }
   }

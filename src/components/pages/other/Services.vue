@@ -1,17 +1,17 @@
 <template>
   <v-container class="homefone">
     <v-row justify="center">
-      <v-col cols="12" md="6" lg="6">
+      <v-col cols="12" md="6" lg="4">
         <v-card class="transparent">
-          <v-toolbar flat>
+          <v-toolbar dark>
             <v-spacer />
-            <v-btn icon @click="newService">
+            <v-btn icon @click="createNewService">
               <v-icon>$add</v-icon>
             </v-btn>
           </v-toolbar>
           <v-simple-table
             fixed-header
-            height="75vh"
+            max-height="75vh"
           >
             <template v-slot:default>
               <thead>
@@ -49,7 +49,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="6" lg="6">
+      <v-col cols="12" md="6" lg="4">
         <ServiceForm
           v-if="currentServiceId"
           :id="currentServiceId"
@@ -62,63 +62,44 @@
 
 <script>
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, /* mapMutations, */ mapActions } from 'vuex'
 
 export default {
   name: 'Services',
   components: {
-    ServiceForm: () => import('@/components/services/ServiceForm')
+    ServiceForm: () => import('@/components/pages/services/ServiceForm')
   },
   data: () => ({
     currentServiceId: null,
-    currentService: null,
-    openDetailInfo: false,
-    showEdit: false
+    currentService: null
   }),
   props: [],
   computed: {
     ...mapState('services', ['services'])
   },
-  watch: {
-    currentService: {
-      deep: true,
-      handler (val) {
-        console.log('CURRENT SERVICE CHANGED:\n', val)
-      }
-    }
-  },
   methods: {
     ...mapActions('services', {
+      updateServices: 'UPDATE_SERVICES',
+      updateService: 'UPDATE_SERVICE',
       getAllServices: 'GET_SERVICES',
-      createNewService: 'ADD_NEW_SERVICE'
+      createNewService: 'CREATE_SERVICE',
+      deleteService: 'DELETE_SERVICE'
     }),
-    newService () {
-      console.log('Create')
-    },
     edit (item, id) {
-      console.log(id)
-      console.log(item)
+      if (!id || !item) return
       this.currentServiceId = id
       this.currentService = item
     },
     remove (item, id) {
-      console.log(id)
-      console.log(item)
+      if (this.currentServiceId === id) {
+        this.currentServiceId = null
+        this.currentService = null
+      }
+      this.deleteService(id)
     }
   },
   created () {
     this.getAllServices()
-  },
-  mounted () {}
+  }
 }
 </script>
-
-<style scoped>
-</style>
-
-<style lang="scss" scoped>
-.v-data-table > .v-data-table__wrapper > table > thead > tr > th,
-.v-data-table > .v-data-table__wrapper > table > tbody > tr > td, .v-data-table > .v-data-table__wrapper > table > thead > tr > td, .v-data-table > .v-data-table__wrapper > table > tfoot > tr > td{
-  font-size: 16px;
-}
-</style>

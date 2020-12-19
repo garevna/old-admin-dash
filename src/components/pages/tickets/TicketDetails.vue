@@ -53,7 +53,9 @@
             </tr>
             <tr class="my-2">
               <td>Address</td>
-              <td><b color="#09b">{{ currentTicket.address }}</b></td>
+              <td>
+                <span style="color: #09b">{{ currentTicket.address }}</span>
+              </td>
             </tr>
             <!-- <tr>
               <td>Apt.num</td>
@@ -61,11 +63,13 @@
             </tr> -->
             <tr v-if="currentTicket.footprint">
               <td>Footprint</td>
-              <td><v-checkbox :input-value="currentTicket.footprint" readonly color="#E82F37" /></td>
+              <td><v-checkbox :input-value="currentTicket.footprint" readonly color="#09b" /></td>
             </tr>
             <tr v-if="!currentTicket.footprint">
-              <td>Distance from the footprint</td>
-              <td>{{ Math.round(currentTicket.distanceFromFootprint) }}</td>
+              <td> Distance from the footprint </td>
+              <td>
+                <span style="color: #E82F37">{{ Math.round(currentTicket.distanceFromFootprint) }}</span> <small>m</small>
+              </td>
             </tr>
             <tr v-if="currentTicket.message">
               <td>Message from RSP</td>
@@ -163,3 +167,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+td, th {
+  color: #fff !important;
+}
+</style>

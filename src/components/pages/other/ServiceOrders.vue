@@ -1,37 +1,41 @@
 <template>
-  <div>
-    <h2 class="text-center">Service orders</h2>
-    <v-card>
-      <Table
-        :data="serviceOrders"
-        :options="options"
-        :callBack="callBack"
-      /> </v-card
-    ><v-dialog
-      v-model="dialog"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
-      <v-card>
-        <v-toolbar dark color="primary">
-          <v-btn icon dark @click="dialog = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>Service order</v-toolbar-title>
-          <v-spacer></v-spacer>
-        </v-toolbar>
-        <v-container>
-          <ServiceDetail v-if="currentOrder" :data="currentOrder" />
-        </v-container>
-        <v-card-actions class="d-flex justify-center">
-          <!-- <v-btn>some btn</v-btn>
-          <v-btn>some btn</v-btn>
-          <v-btn>some btn</v-btn> -->
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-container class="mb-12">
+    <v-row justify="center">
+      <v-col cols="12" lg="4">
+        <v-card flat class="transparent my-2 mx-0">
+          <v-simple-table
+            fixed-header
+            max-height="75%"
+          >
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th style="width: 160px"> Product/Service Type </th>
+                  <th style="width: 340px"> Company Name </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in serviceOrders"
+                  :key="index"
+                  @click="currentOrderId = item._id"
+                >
+                  <td>{{ item.product }}</td>
+                  <td>{{ item.companyName }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card>
+      </v-col>
+      <v-col cols="12" lg="8">
+        <ServiceDetails
+          v-if="currentOrderId"
+          :data.sync="currentOrder"
+        />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <style lang="scss" scoped>
@@ -40,22 +44,16 @@
 </style>
 
 <script>
-import Table from '@/components/table/Table'
-import ServiceDetail from '@/components/service-orders/ServiceDetail'
-import orders from '@/components/service-orders/mockData'
-import options from '@/components/service-orders/options'
 
 export default {
   name: 'ServiceOrders',
   components: {
-    Table,
-    ServiceDetail
+    ServiceDetails: () => import('@/components/pages/service-orders/ServiceDetails.vue')
   },
   data: () => ({
-    serviceOrders: [],
+    serviceOrders: require('@/config/service-orders-mock-data').default,
     currentOrderId: null,
-    dialog: false,
-    options
+    dialog: false
   }),
   computed: {
     currentOrder () {
@@ -67,22 +65,6 @@ export default {
       if (!val) return
       this.dialog = true
     }
-  },
-  methods: {
-    callBack (id) {
-      console.log(id)
-      this.currentOrderId = id
-    }
-  },
-  beforeMount () {},
-  mounted () {
-    const arr = new Array(4)
-    arr.fill(orders[0])
-    arr.forEach((order, index) => {
-      order._id += index
-    })
-    this.serviceOrders = arr
-  },
-  destroyed () {}
+  }
 }
 </script>

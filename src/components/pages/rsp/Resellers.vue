@@ -1,15 +1,15 @@
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="6">
-      <v-card max-width="480" min-width="360" class="mx-auto">
-        <v-simple-table height="75vh">
+    <v-col cols="12" md="6">
+      <v-card max-width="480" min-width="360" class="mx-auto pa-8">
+        <v-simple-table max-height="75vh">
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left">
+                <th style="color: #900">
                   Company
                 </th>
-                <th class="text-left">
+                <th style="color: #900">
                   Name
                 </th>
               </tr>
