@@ -6,12 +6,6 @@
           RSP
         </v-toolbar-title>
         <v-spacer />
-
-        <!-- <RSPBtnGroup
-          :accept.sync="acceptBtn"
-          :reject.sync="rejectBtn"
-          :send.sync="sendBtn"
-        /> -->
         <Menu :options="menuOptions" :goto.sync="goto" />
       </v-toolbar>
     </v-app-bar>
@@ -19,7 +13,6 @@
     <v-container>
       <Resellers :params="params" />
       <Reseller v-if="goto === 'reseller'" :params="params" />
-      <!-- <ClientsOfReseller v-if="goto === 'customers'" :params="params" /> -->
       <EndCustomers v-if="goto === 'customers'" :params="params" />
       <Traffic v-if="goto === 'traffic'" :params="params" />
       <Payments v-if="goto === 'payments'" :params="params" />

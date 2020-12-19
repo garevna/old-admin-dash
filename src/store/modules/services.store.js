@@ -18,11 +18,9 @@ const actions = {
   async GET_SERVICES ({ state, commit }) {
     const response = await getData('service')
 
-    console.log('SERVICES:\n', response)
-
     if (!response.error) {
       const services = {}
-      for (const record of response.services) {
+      for (const record of response.data) {
         const id = record._id
         const service = {}
         for (const key in state.serviceSchema) {
@@ -32,8 +30,6 @@ const actions = {
         }
         services[id] = service
       }
-
-      console.log(services)
 
       commit('UPDATE_SERVICES', services)
     } else {

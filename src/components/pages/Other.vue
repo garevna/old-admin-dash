@@ -1,45 +1,44 @@
 <template>
-  <div>
+  <v-container>
     <v-app-bar app elevate-on-scroll>
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
-          {{ title }}
+          <h5>{{ title }}</h5>
         </v-toolbar-title>
-        <v-spacer />
+        <v-spacer></v-spacer>
         <Menu :options="menuOptions" :goto.sync="goto" />
-        <!-- <VideoTutorials /> -->
       </v-toolbar>
     </v-app-bar>
 
-    <v-container>
+    <v-row justify="center">
+      <VideoTutorials v-if="goto === 'tutorials'" />
       <Services v-if="goto === 'services'" />
       <ServiceOrders v-if="goto === 'orders'" />
-      <!-- <Wells v-if="goto === 'wells'" /> -->
-    </v-container>
-  </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 
 export default {
   name: 'Other',
-  props: [],
 
   components: {
     Menu: () => import('@/components/Menu.vue'),
     Services: () => import('@/components/pages/other/Services.vue'),
-    ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue')
-    // VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
+    ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue'),
+    VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
   },
 
   data: () => ({
     menuOptions: [
+      { text: 'Video Tutorials', value: 'tutorials' },
       { text: 'Services', value: 'services' },
       { text: 'Service Orders', value: 'orders' },
       { text: 'Buildings API', value: 'buildings' },
       { text: 'Pits API', value: 'wells' }
     ],
-    goto: 'sevices'
+    goto: 'tutorials'
   }),
 
   computed: {

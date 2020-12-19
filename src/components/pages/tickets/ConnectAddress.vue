@@ -80,9 +80,7 @@ export default {
       return this.tickets.find(item => item._id === this.currentTicketId)
     },
     currentRSP () {
-      console.log(this.currentTicket.resellerId, this.rsp.find(item => item._id === this.currentTicket.resellerId))
-      const id = this.currentTicket.resellerId
-      return this.rsp.find(item => item._id === id) || {}
+      return this.rsp.find(item => item._id === this.currentTicket.resellerId) || {}
     }
   },
 
@@ -106,7 +104,6 @@ export default {
       sendMessage: 'SEND_MESSAGE_WITH_CURRENT_TICKET'
     }),
     rowClickHandler (id) {
-      console.log(id)
       this.currentTicketId = id
     }
   }
