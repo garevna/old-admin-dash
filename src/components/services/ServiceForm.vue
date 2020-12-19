@@ -20,16 +20,15 @@
     >
       <v-col>
         <v-text-field
+          v-if="item.type === 'string' || item.type === 'number'"
           :value="item.value"
           :label="item.label"
           v-model="item.value"
-          :rules="item.type==='number' ? [rules.onlyDigits] : [rules.required]"
+          :rules="item.type==='number' ? [rules.onlyDigits, rules.required] : [rules.required]"
           dense
         ></v-text-field>
       </v-col>
-      <v-col
-        v-if="item.type==='boolean'"
-      >
+      <v-col v-if="item.type === 'boolean'">
         <v-checkbox
           :value="item.value"
           :label="item.label"

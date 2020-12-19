@@ -32,6 +32,7 @@ export default new Vuetify({
       marker: 'mdi-map-marker',
       menu: 'mdi-dots-vertical',
       message: 'mdi-message-reply-text',
+      window: 'mdi-open-in-new',
       other: 'mdi-folder-table',
       pdf: 'mdi-file-pdf',
       registration: 'mdi-account-plus',

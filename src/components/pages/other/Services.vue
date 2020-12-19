@@ -1,17 +1,17 @@
 <template>
   <v-container class="homefone">
     <v-row justify="center">
-      <v-col cols="12" md="6" lg="6">
+      <v-col cols="12" md="6" lg="4">
         <v-card class="transparent">
-          <v-toolbar flat>
+          <v-toolbar dark>
             <v-spacer />
-            <v-btn icon @click="newService">
+            <v-btn icon @click="createNewService">
               <v-icon>$add</v-icon>
             </v-btn>
           </v-toolbar>
           <v-simple-table
             fixed-header
-            height="75vh"
+            max-height="75vh"
           >
             <template v-slot:default>
               <thead>
@@ -49,7 +49,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="6" lg="6">
+      <v-col cols="12" md="6" lg="4">
         <ServiceForm
           v-if="currentServiceId"
           :id="currentServiceId"
@@ -77,15 +77,6 @@ export default {
   computed: {
     ...mapState('services', ['services'])
   },
-  watch: {
-    services: {
-      immediate: true,
-      deep: true,
-      handler (val) {
-        console.log('SERVICES CHANGED\n', val)
-      }
-    }
-  },
   methods: {
     ...mapActions('services', {
       updateServices: 'UPDATE_SERVICES',
@@ -94,25 +85,17 @@ export default {
       createNewService: 'CREATE_SERVICE',
       deleteService: 'DELETE_SERVICE'
     }),
-    async newService () {
-      const { id, service } = await this.createNewService()
-      console.log(id, service)
-      console.log(Object.keys(this.services))
-    },
     edit (item, id) {
-      console.log(id)
-      console.log(item)
       if (!id || !item) return
       this.currentServiceId = id
       this.currentService = item
     },
-    async remove (item, id) {
+    remove (item, id) {
       if (this.currentServiceId === id) {
         this.currentServiceId = null
         this.currentService = null
       }
-      await this.deleteService(id)
-      console.log(Object.keys(this.services))
+      this.deleteService(id)
     }
   },
   created () {

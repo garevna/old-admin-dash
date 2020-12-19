@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-app-bar app elevate-on-scroll>
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
@@ -35,10 +35,9 @@ export default {
       { text: 'Video Tutorials', value: 'tutorials' },
       { text: 'Services', value: 'services' },
       { text: 'Service Orders', value: 'orders' },
-      { text: 'Buildings API', value: 'buildings' },
       { text: 'Pits API', value: 'wells' }
     ],
-    goto: 'tutorials'
+    goto: 'services'
   }),
 
   computed: {

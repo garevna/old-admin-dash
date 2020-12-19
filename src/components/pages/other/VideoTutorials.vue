@@ -1,6 +1,6 @@
 <template>
-    <v-card flat class="transparent text-center" with="100%" height="80%">
-      <v-toolbar>
+    <v-card flat dark class="text-center" :with="playerWidth" :height="playerHeight + 120">
+      <v-toolbar dark>
         <v-toolbar-title>
           <h6>{{ currentVideo.title }}</h6>
         </v-toolbar-title>
@@ -80,7 +80,6 @@ export default {
   }),
   computed: {
     currentVideo () {
-      console.log(typeof this.currentVideoIndex)
       if (typeof this.currentVideoIndex !== 'number') return this.videoList[0]
       return this.videoList[this.currentVideoIndex]
     }
@@ -94,7 +93,7 @@ export default {
   },
   methods: {
     resize () {
-      this.playerWidth = window.innerWidth * 0.7
+      this.playerWidth = window.innerWidth * 0.8
       this.playerHeight = window.innerHeight * 0.7
     }
   },
