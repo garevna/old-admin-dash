@@ -40,7 +40,7 @@
 import Step1 from './Step1'
 import Step2 from './Step2'
 export default {
-  name: 'ServiceDetail',
+  name: 'ServiceDetails',
   props: ['data'],
   components: {
     Step1,

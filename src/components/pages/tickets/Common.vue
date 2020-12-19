@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12" md="6">
         <v-card flat class="transparent">
-          <Table :data="tickets" :options="options" :callBack="callBack" />
+          <!-- <Table :data="tickets" :options="options" :callBack="callBack" /> -->
         </v-card>
       </v-col>
       <v-col cols="12" md="6">
@@ -14,7 +14,7 @@
             Settings
           </p>
           <v-divider></v-divider>
-          <TableDetail :data="currentTicket" :options="detailInfo" />
+          <!-- <TableDetail :data="currentTicket" :options="detailInfo" /> -->
           <v-card-actions class="d-flex justify-center">
             <v-btn text> accept </v-btn>
             <v-btn text> reject </v-btn>
@@ -28,17 +28,17 @@
 <script>
 import { mapState } from 'vuex'
 
-import Table from '@/components/table/Table'
-import TableDetail from '@/components/table/TableDetail'
+// import Table from '@/components/table/Table'
+// import TableDetail from '@/components/table/TableDetail'
 
 export default {
   name: 'Common',
   props: ['accept', 'reject', 'send'],
 
-  components: {
-    Table,
-    TableDetail
-  },
+  // components: {
+  //   Table,
+  //   TableDetail
+  // },
 
   data: () => ({
     currentId: null,

@@ -32,15 +32,18 @@ export default new Vuetify({
       marker: 'mdi-map-marker',
       menu: 'mdi-dots-vertical',
       message: 'mdi-message-reply-text',
-      window: 'mdi-open-in-new',
+      orders: 'mdi-printer',
       other: 'mdi-folder-table',
       pdf: 'mdi-file-pdf',
       registration: 'mdi-account-plus',
       rightArrow: 'mdi-arrow-right-bold',
       save: 'mdi-content-save',
       send: 'mdi-send',
+      services: 'mdi-apps-box',
       tickets: 'mdi-card-text',
-      upload: 'mdi-file-upload'
+      tutorials: 'mdi-file-video',
+      upload: 'mdi-file-upload',
+      window: 'mdi-open-in-new'
     }
   },
   theme: {

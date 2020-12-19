@@ -6,7 +6,26 @@
           <h5>{{ title }}</h5>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <Menu :options="menuOptions" :goto.sync="goto" />
+        <v-tooltip
+          bottom
+          color="primary"
+          v-for="(item, index) in menuOptions"
+          :key="index"
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              :color="goto !== item.value ? '#333' : 'primary'"
+              dark
+              v-on="on"
+              @click="goto = item.value"
+            >
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-btn>
+          </template>
+          <span>{{ item.text }}</span>
+        </v-tooltip>
+        <!-- <Menu :options="menuOptions" :goto.sync="goto" /> -->
       </v-toolbar>
     </v-app-bar>
 
@@ -24,7 +43,7 @@ export default {
   name: 'Other',
 
   components: {
-    Menu: () => import('@/components/Menu.vue'),
+    // Menu: () => import('@/components/Menu.vue'),
     Services: () => import('@/components/pages/other/Services.vue'),
     ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue'),
     VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
@@ -32,11 +51,28 @@ export default {
 
   data: () => ({
     menuOptions: [
-      { text: 'Video Tutorials', value: 'tutorials' },
-      { text: 'Services', value: 'services' },
-      { text: 'Service Orders', value: 'orders' },
-      { text: 'Pits API', value: 'wells' }
+      {
+        text: 'Video Tutorials',
+        value: 'tutorials',
+        icon: '$tutorials'
+      },
+      {
+        text: 'Services',
+        value: 'services',
+        icon: '$services'
+      },
+      {
+        text: 'Service Orders',
+        value: 'orders',
+        icon: '$orders'
+      }
     ],
+    // menuOptions: [
+    //   { text: 'Video Tutorials', value: 'tutorials' },
+    //   { text: 'Services', value: 'services' },
+    //   { text: 'Service Orders', value: 'orders' },
+    //   { text: 'Pits API', value: 'wells' }
+    // ],
     goto: 'services'
   }),
 

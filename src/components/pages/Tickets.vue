@@ -37,13 +37,9 @@
         :type="goto"
       />
 
-      <Common
-        v-if="goto === 'other'"
-        :params="params"
-        :accept.sync="acceptBtn"
-        :reject.sync="rejectBtn"
-        :send.sync="sendBtn"
-      />
+      <CommonTikets v-if="goto === 'other'" />
+
+      <ArchiveTikets v-if="goto === 'other'" />
     </v-card>
   </v-container>
 </template>
@@ -56,9 +52,10 @@ export default {
 
   components: {
     // Menu: () => import('@/components/Menu.vue'),
-    Common: () => import('@/components/pages/tickets/Common.vue'),
     LeadRequests: () => import('@/components/pages/tickets/LeadRequests.vue'),
-    ConnectAddress: () => import('@/components/pages/tickets/ConnectAddress.vue')
+    ConnectAddress: () => import('@/components/pages/tickets/ConnectAddress.vue'),
+    CommonTikets: () => import('@/components/pages/tickets/Common.vue'),
+    ArchiveTikets: () => import('@/components/pages/tickets/Archive.vue')
   },
 
   data: () => ({
@@ -89,12 +86,7 @@ export default {
         icon: '$archive'
       }
     ],
-    goto: 'register',
-    name: '',
-    params: null,
-    acceptBtn: false,
-    rejectBtn: false,
-    sendBtn: false
+    goto: 'register'
   }),
   computed: {
     currentType () {
