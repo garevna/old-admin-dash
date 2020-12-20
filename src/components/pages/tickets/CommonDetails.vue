@@ -1,32 +1,89 @@
 <template>
-  <v-card flat>
+  <v-card flat max-height="480">
     <v-card dark v-if="id" class="pa-0">
       <v-toolbar dark>
         <v-toolbar-title>
           {{ currentTicket.createdAt }}
         </v-toolbar-title>
+        <v-spacer />
+        <v-menu offset-y left>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              icon
+              dark
+              v-on="on"
+            >
+              <v-icon>$menu</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="moveToArchive">
+              <v-list-item-title>
+                Move to archive
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="moveToTrash">
+              <v-list-item-title>
+                Move to trash (delete)
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-toolbar>
-
-      <v-simple-table dark height="75%">
-        <template v-slot:default>
-          <tbody>
-            <tr class="my-2">
-              <td>Subject</td>
-              <td>
-                <b color="#09b">{{ currentTicket.subject }}</b>
-              </td>
-            </tr>
-            <tr>
-              <td>Description</td>
-              <td>{{ currentTicket.description }}</td>
-            </tr>
-            <tr v-for="(item, index) in currentHistory" :key="index">
-              <td>{{ item.emitor }}</td>
-              <td>{{ item.message }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+      <v-card-text>
+        <v-simple-table dark>
+          <template v-slot:default>
+            <tbody>
+              <tr>
+                <th> Company </th>
+                <td> {{ currentTicket.rsp.company }} </td>
+              </tr>
+              <tr>
+                <th> Email </th>
+                <td> {{ currentTicket.rsp.email }} </td>
+              </tr>
+              <tr>
+                <th> Phone </th>
+                <td> {{ currentTicket.rsp.phone }} </td>
+              </tr>
+              <tr>
+                <th> Contact Person Details </th>
+                <td> {{ currentTicket.rsp.contactPersonDetails }} </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-card-text>
+      <v-divider color="#fff"></v-divider>
+      <v-card-text>
+        <h5 style="color: #fff">
+          <v-icon class="mr-2" color="#fff">mdi-comment-question</v-icon>
+          {{ currentTicket.subject }}
+        </h5>
+        <v-simple-table light class="homefone">
+          <template v-slot:default>
+            <tbody>
+              <tr>
+                <td>
+                  <v-icon color="primary">mdi-message-arrow-right</v-icon>
+                </td>
+                <td>{{ currentTicket.description }}</td>
+              </tr>
+              <tr v-for="(item, index) in currentHistory" :key="index">
+                <td>
+                  <v-icon v-if="item.emitor !== 'admin'" color="primary">
+                    mdi-message-arrow-right
+                  </v-icon>
+                  <v-icon v-else color="secondary">
+                    mdi-message-arrow-left
+                  </v-icon>
+                </td>
+                <td>{{ item.message }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-card-text>
     </v-card>
     <v-card flat v-if="currentTicket" class="mt-6">
       <v-toolbar flat>
@@ -78,7 +135,8 @@ export default {
       this.messageBack = ''
     },
     ...mapActions('common', {
-      sendMessageBack: 'SEND_MESSAGE'
+      sendMessageBack: 'SEND_MESSAGE',
+      remove: 'REMOVE_TIKET'
     }),
     sendMessage () {
       this.currentTicket.history.push({
@@ -97,16 +155,20 @@ export default {
       this.clear()
     },
     moveToArchive () {
-      //
+      this.remove(this.id)
+      this.$emit('update:id', null)
     },
-    // moveToTrash () {
-    //   const index = this.tickets.findIndex(item => item._id === this.currentTicket._id)
-    //   this.tickets.splice(index, 1)
-    //   index !== -1 && this.updateTickets()
-    // },
-    changeStatus () {
-      //
+    moveToTrash () {
+      this.remove(this.id)
+      this.$emit('update:id', null)
     }
   }
 }
 </script>
+
+<style scoped>
+h5 {
+  font-size: 1rem;
+  text-align: right;
+}
+</style>

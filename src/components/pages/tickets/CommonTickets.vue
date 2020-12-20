@@ -1,44 +1,54 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12" md="6">
-        <v-card flat class="transparent">
-          <!-- <Table :data="tickets" :options="options" :callBack="callBack" /> -->
+    <v-row justify="center">
+      <v-col cols="12" md="6" lg="3">
+        <v-card flat class="transparent" max-height="75%">
+          <v-simple-table
+            fixed-header
+          >
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th style="width: 160px"> Date (created) </th>
+                  <th style="width: 340px"> Company </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in tickets"
+                  :key="index"
+                  @click="currentId = item._id"
+                >
+                  <td> {{ item.createdAt }} </td>
+                  <td> {{ item.rsp.company }} </td>
+                  <!-- <td> {{ item.rsp.email }} </td>
+                  <td> {{ item.rsp.phone }} </td>
+                  <td> {{ item.rsp.contactPersonDetails }} </td> -->
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6">
-        <v-card>
+      <v-col cols="12" md="6" lg="5">
+        <v-card max-height="50%">
           <CommonDetails :id.sync="currentId"/>
-          <!-- <p
-            class="text-center headline text-uppercase primary--text py-5 mb-0"
-          >
-            Settings
-          </p>
-          <v-divider></v-divider>
-          <TableDetail :data="currentTicket" :options="detailInfo" /> -->
-          <v-card-actions class="d-flex justify-center">
-            <v-btn text> accept </v-btn>
-            <v-btn text> reject </v-btn>
-            <v-btn text> send </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
-<script>
-import { mapState } from 'vuex'
 
-// import Table from '@/components/table/Table'
-import CommonDetails from '@/components/pages/tickets/CommonDetails.vue'
-// import TicketDetail from '@/components/table/TicketDetail.vue'
+<script>
+
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Common',
   props: ['accept', 'reject', 'send'],
 
   components: {
-    CommonDetails
+    CommonDetails: () => import('@/components/pages/tickets/CommonDetails.vue')
   },
 
   data: () => ({
@@ -91,34 +101,13 @@ export default {
       return this.tickets.find(ticket => ticket._id === this.currentId)
     }
   },
-  watch: {
-    accept (val) {
-      if (!val) return
-      console.log('accept')
-      this.$emit('update:accept', false)
-    },
-    reject (val) {
-      if (!val) return
-      console.log('reject')
-      this.$emit('update:reject', false)
-    },
-    send (val) {
-      if (!val) return
-      console.log('send')
-      this.$emit('update:send', false)
-    },
-    currentId (val) {
-      if (!val) return
-      this.dialog = true
-    }
-  },
   methods: {
-    callBack (id) {
-      this.currentId = id
-    }
+    ...mapActions('common', {
+      getTickets: 'GET_TICKETS'
+    })
   },
   created () {
-    this.$store.dispatch('common/GET_TICKETS')
+    this.getTickets()
   }
 }
 </script>

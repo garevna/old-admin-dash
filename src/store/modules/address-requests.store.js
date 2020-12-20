@@ -32,7 +32,6 @@ const mutations = {
     const index = state.tickets.findIndex(item => item._id === id)
     if (index !== -1) {
       state.tickets.splice(index, 1)
-      console.log(state.tickets)
     }
   }
 }
@@ -41,7 +40,6 @@ const actions = {
 
   async GET_TICKETS ({ state, commit }) {
     const response = await getData(`ticket/${state.type}`)
-    console.log('address requests:\n', response)
 
     if (!response.error) {
       const tickets = response.data

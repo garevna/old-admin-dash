@@ -39,7 +39,7 @@
 
       <CommonTikets v-if="goto === 'other'" />
 
-      <ArchiveTikets v-if="goto === 'other'" />
+      <ArchiveTikets v-if="goto === 'archive'" />
     </v-card>
   </v-container>
 </template>

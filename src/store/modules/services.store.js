@@ -97,8 +97,6 @@ const actions = {
   async DELETE_SERVICE ({ state, commit }, id) {
     const response = await deleteData(`service/${id}`)
 
-    console.log(response)
-
     if (!response.error) {
       commit('REMOVE_SERVICE', id)
       commit('MESSAGE', {

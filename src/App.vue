@@ -50,7 +50,7 @@
 
 import 'dgtek-styles'
 
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'App',
@@ -70,8 +70,26 @@ export default {
     ...mapActions({
       getRSP: 'GET_RSP'
     }),
-    redirectToBuildingsAPI () {
-      window.open('https://garevna.github.io/dgtek-buildings-api/')
+    ...mapMutations({
+      showMessage: 'MESSAGE',
+      showError: 'ERROR'
+    }),
+    async redirectToBuildingsAPI () {
+      const { data, error } = await this._getBuildingsAPI()
+      if (!error) {
+        window.open(data, '_blank')
+        this.showMessage({
+          message: true,
+          messageType: 'Buildings API',
+          messageText: 'Welcome!'
+        })
+      } else {
+        this.showError({
+          error: true,
+          errorType: 'Access failed',
+          errorMessage: 'Something went wrong... perhaps you have no access to this API'
+        })
+      }
     }
   },
   created () {

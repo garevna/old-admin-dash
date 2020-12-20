@@ -9,7 +9,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     rsp: null,
-    resellers: null,
     error: null,
     errorMessage: '',
     errorType: '',

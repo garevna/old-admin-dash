@@ -87,8 +87,6 @@ export default {
   watch: {
     currentVideo (val) {
       this.$refs.video.load()
-      console.log(val, this.videoList[this.currentVideoIndex].title)
-      console.log(this.videoList[this.currentVideoIndex].ref)
     }
   },
   methods: {

@@ -13,7 +13,7 @@ const mutations = {
   REMOVE_TICKET_BY_ID: (state, id) => {
     const index = state.tickets.findIndex(item => item._id === id)
     if (index !== -1) {
-      state.tickets = state.tickets.splice(index, 1)
+      state.tickets.splice(index, 1)
     }
     return index !== -1
   }
@@ -23,8 +23,6 @@ const actions = {
 
   async GET_TICKETS ({ commit }) {
     const response = await getData('ticket/registration')
-
-    console.log(response)
 
     if (!response.error) {
       const tickets = response.data
@@ -43,20 +41,18 @@ const actions = {
     }
   },
 
-  async ACCEPT_TICKET ({ commit }, { id, payload }) {
-    const response = await postData(`ticket/accept/${id}`, payload)
-
-    console.log(response)
-
+  async ACCEPT_TICKET (context, { id, payload }) {
+    const response = await postData(`ticket/registration/accept/${id}`, payload)
     if (!response.error) {
-      commit('MESSAGE', {
+      context.dispatch('GET_RSP', null, { root: true })
+      context.commit('MESSAGE', {
         message: true,
         messageType: 'Accept Lead request',
         messageText: 'Success'
       }, { root: true })
-      commit('REMOVE_TICKET_BY_ID', id)
+      context.commit('REMOVE_TICKET_BY_ID', id)
     } else {
-      commit('ERROR', {
+      context.commit('ERROR', {
         error: true,
         errorType: 'Accept Lead request',
         errorMessage: 'Process failed'
@@ -65,9 +61,7 @@ const actions = {
   },
 
   async REJECT_TICKET ({ getters, commit, dispatch }, { id, payload }) {
-    const response = await postData(`ticket/reject/${id}`, payload)
-
-    console.log(response)
+    const response = await postData(`ticket/registration/reject/${id}`, payload)
 
     if (!response.error) {
       commit('MESSAGE', {
@@ -75,7 +69,7 @@ const actions = {
         messageType: 'Reject Lead request',
         messageText: 'Success'
       }, { root: true })
-      commit('REMOVE_TICKET_ID', id)
+      commit('REMOVE_TICKET_BY_ID', id)
     } else {
       commit('ERROR', {
         error: true,

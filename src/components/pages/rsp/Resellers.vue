@@ -54,10 +54,6 @@ export default {
     reseller () {
       return this.rsp.find(reseller => reseller._id === this.currentId)
     }
-  },
-
-  mounted () {
-    console.log('MOUNTED:\n', this.rsp)
   }
 }
 </script>

@@ -2,16 +2,12 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" md="6" lg="4">
-        <v-card flat class="transparent my-2 mx-0">
-          <v-simple-table
-            fixed-header
-            max-height="75%"
-          >
+        <v-card flat class="transparent">
+          <v-simple-table fixed-header max-height="75%">
             <template v-slot:default>
               <thead>
                 <tr>
                   <th style="width: 160px"> Date (created) </th>
-                  <!-- <th style="width: 100px"> Apt.num </th> -->
                   <th style="width: 340px"> Address </th>
                   <th v-if="type === 'connection-request'">
                     Footprint

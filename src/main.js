@@ -12,6 +12,7 @@ import 'dgtek-styles/css/variables.scss'
 Vue.config.productionTip = false
 
 Vue.prototype._readFile = require('@/helpers/readFile').default
+Vue.prototype._getBuildingsAPI = require('@/helpers/getBuildingsAPI').default
 
 Vue.component('error-message', ErrorMessage)
 Vue.component('simple-message', Message)
