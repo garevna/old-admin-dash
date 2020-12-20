@@ -8,13 +8,14 @@
       </v-col>
       <v-col cols="12" md="6">
         <v-card>
-          <p
+          <CommonDetails :id.sync="currentId"/>
+          <!-- <p
             class="text-center headline text-uppercase primary--text py-5 mb-0"
           >
             Settings
           </p>
           <v-divider></v-divider>
-          <!-- <TableDetail :data="currentTicket" :options="detailInfo" /> -->
+          <TableDetail :data="currentTicket" :options="detailInfo" /> -->
           <v-card-actions class="d-flex justify-center">
             <v-btn text> accept </v-btn>
             <v-btn text> reject </v-btn>
@@ -29,16 +30,16 @@
 import { mapState } from 'vuex'
 
 // import Table from '@/components/table/Table'
-// import TableDetail from '@/components/table/TableDetail'
+import CommonDetails from '@/components/pages/tickets/CommonDetails.vue'
+// import TicketDetail from '@/components/table/TicketDetail.vue'
 
 export default {
   name: 'Common',
   props: ['accept', 'reject', 'send'],
 
-  // components: {
-  //   Table,
-  //   TableDetail
-  // },
+  components: {
+    CommonDetails
+  },
 
   data: () => ({
     currentId: null,

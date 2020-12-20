@@ -54,7 +54,7 @@ export default {
     // Menu: () => import('@/components/Menu.vue'),
     LeadRequests: () => import('@/components/pages/tickets/LeadRequests.vue'),
     ConnectAddress: () => import('@/components/pages/tickets/ConnectAddress.vue'),
-    CommonTikets: () => import('@/components/pages/tickets/Common.vue'),
+    CommonTikets: () => import('@/components/pages/tickets/CommonTickets.vue'),
     ArchiveTikets: () => import('@/components/pages/tickets/Archive.vue')
   },
 
