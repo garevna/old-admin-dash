@@ -3,7 +3,7 @@
     <v-app-bar app flat>
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
-          {{ currentType }}
+          <h5><v-icon color="#900">{{ currentIcon }}</v-icon> {{ currentType }}</h5>
         </v-toolbar-title>
         <v-spacer />
         <v-tooltip
@@ -33,7 +33,7 @@
       <LeadRequests v-if="goto === 'register'" />
 
       <ConnectAddress
-        v-if="goto === 'connection-request' || goto === 'connectivity-research'"
+        v-if="goto === 'connection' || goto === 'connectivity'"
         :type="goto"
       />
 
@@ -67,12 +67,12 @@ export default {
       },
       {
         text: 'Connection request',
-        value: 'connection-request',
+        value: 'connection',
         icon: '$connection'
       },
       {
         text: 'Connectivity research',
-        value: 'connectivity-research',
+        value: 'connectivity',
         icon: '$connectivity'
       },
       {
@@ -91,6 +91,9 @@ export default {
   computed: {
     currentType () {
       return this.menuOptions.find(item => item.value === this.goto).text
+    },
+    currentIcon () {
+      return this.menuOptions.find(item => item.value === this.goto).icon
     }
   }
 }

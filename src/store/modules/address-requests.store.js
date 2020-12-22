@@ -1,18 +1,22 @@
-/* eslint-disable no-unused-vars */
-
 const {
   getData,
-  postData,
-  putData,
   deleteData,
   patchData
 } = require('@/helpers').default
 
+const errors = require('@/config/errors').default.address
+const messages = require('@/config/messages').default.address
+const endpoints = {
+  connection: require('@/config/endpoints').default.connection,
+  connectivity: require('@/config/endpoints').default.connectivity
+}
+console.log(errors)
+console.log(messages)
+console.log(endpoints)
+
 const state = {
-  types: ['connection-request', 'connectivity-research'],
-  names: ['ticketsCommon', 'connectivityResearchTickets'],
-  type: 'connection-request',
-  dataName: 'ticketsCommon',
+  types: ['connection', 'connectivity'],
+  type: 'connection',
   tickets: []
 }
 
@@ -21,7 +25,6 @@ const mutations = {
   UPDATE_TICKET_TYPE: (state, type) => {
     const index = state.types.indexOf(type)
     state.type = index !== -1 ? type : state.types[0]
-    state.dataName = index !== -1 ? state.names[index] : state.names[0]
   },
 
   TICKETS: (state, payload) => {
@@ -39,7 +42,7 @@ const mutations = {
 const actions = {
 
   async GET_TICKETS ({ state, commit }) {
-    const response = await getData(`ticket/${state.type}`)
+    const response = await getData(endpoints[state.type].get)
 
     if (!response.error) {
       const tickets = response.data
@@ -50,28 +53,16 @@ const actions = {
         }))
       commit('TICKETS', tickets)
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Reading tikets',
-        errorMessage: 'Process failed...'
-      }, { root: true })
+      commit('ERROR', errors.get, { root: true })
     }
   },
 
   async DELETE_TICKET ({ commit }, id) {
-    const response = await deleteData(`ticket/${state.type}/${id}`)
+    const response = await deleteData(`${endpoints[state.type].delete}/${id}`)
     if (response.error) {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Delete ticket',
-        errorMessage: 'Operation failed'
-      }, { root: true })
+      commit('ERROR', errors.delete, { root: true })
     } else {
-      commit('MESSAGE', {
-        message: true,
-        messageType: 'Delete ticket',
-        messageText: 'Ticket was removed forever'
-      }, { root: true })
+      commit('MESSAGE', messages.delete, { root: true })
       commit('REMOVE', id)
     }
 
@@ -79,19 +70,11 @@ const actions = {
   },
 
   async SEND_MESSAGE_WITH_CURRENT_TICKET (context, payload) {
-    const response = await patchData(`ticket/${state.type}/${payload.id}`, payload.historyElement)
+    const response = await patchData(`${endpoints[state.type].history}/${payload.id}`, payload.historyElement)
     if (response.error) {
-      context.commit('ERROR', {
-        error: true,
-        errorType: 'Sending message error',
-        errorMessage: 'Message has not been delivered...'
-      }, { root: true })
+      context.commit('ERROR', errors.history, { root: true })
     } else {
-      context.commit('MESSAGE', {
-        message: true,
-        messageType: 'Sending message',
-        messageText: 'Message has been delivered'
-      }, { root: true })
+      context.commit('MESSAGE', messages.history, { root: true })
     }
     return response
   }

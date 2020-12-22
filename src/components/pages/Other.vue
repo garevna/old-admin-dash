@@ -3,7 +3,7 @@
     <v-app-bar app elevate-on-scroll>
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
-          <h5>{{ title }}</h5>
+          <h5><v-icon color="#900">{{ icon }}</v-icon> {{ title }}</h5>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-tooltip
@@ -67,12 +67,6 @@ export default {
         icon: '$orders'
       }
     ],
-    // menuOptions: [
-    //   { text: 'Video Tutorials', value: 'tutorials' },
-    //   { text: 'Services', value: 'services' },
-    //   { text: 'Service Orders', value: 'orders' },
-    //   { text: 'Pits API', value: 'wells' }
-    // ],
     goto: 'services'
   }),
 
@@ -82,6 +76,9 @@ export default {
     },
     title () {
       return this.selectedMenuItem ? this.selectedMenuItem.text : ''
+    },
+    icon () {
+      return this.selectedMenuItem ? this.selectedMenuItem.icon : ''
     }
   },
 

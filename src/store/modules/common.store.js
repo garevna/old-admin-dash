@@ -1,5 +1,13 @@
 const { getData, deleteData, patchData } = require('@/helpers').default
 
+const errors = require('@/config/errors').default.common
+const messages = require('@/config/messages').default.common
+const endpoints = require('@/config/endpoints').default.common
+
+console.log(errors)
+console.log(messages)
+console.log(endpoints)
+
 const state = {
   tickets: []
 }
@@ -35,7 +43,7 @@ const mutations = {
 
 const actions = {
   async GET_TICKETS (context) {
-    const response = await getData('ticket/common')
+    const response = await getData(endpoints.get)
 
     if (!response.error) {
       const tickets = response.data
@@ -46,47 +54,28 @@ const actions = {
         }))
       context.commit('TICKETS', tickets)
     } else {
-      context.commit('ERROR', {
-        error: true,
-        errorType: 'Reading tikets',
-        errorMessage: 'Process failed...'
-      }, { root: true })
+      context.commit('ERROR', errors.get, { root: true })
     }
   },
 
   async SEND_MESSAGE (context, payload) {
-    const response = await patchData(`ticket/common/set-history/${payload.id}`, payload.historyElement)
+    const response = await patchData(`${endpoints.history}/${payload.id}`, payload.historyElement)
 
     if (response.error) {
-      context.commit('ERROR', {
-        error: true,
-        errorType: 'Sending message',
-        errorMessage: 'Message has not been delivered...'
-      }, { root: true })
+      context.commit('ERROR', errors.history, { root: true })
     } else {
-      context.commit('MESSAGE', {
-        message: true,
-        messageType: 'Sending message',
-        messageText: 'Message has been delivered'
-      }, { root: true })
+      console.log(messages.history)
+      context.commit('MESSAGE', messages.history, { root: true })
     }
   },
 
   async REMOVE_TIKET (context, payload) {
-    const response = await deleteData(`ticket/common/${payload.id}`)
+    const response = await deleteData(`${endpoints.delete}/${payload.id}`)
 
     if (response.error) {
-      context.commit('ERROR', {
-        error: true,
-        errorType: 'Delete ticket',
-        errorMessage: 'Process failed...'
-      }, { root: true })
+      context.commit('ERROR', errors.delete, { root: true })
     } else {
-      context.commit('MESSAGE', {
-        message: true,
-        messageType: 'Delete ticket',
-        messageText: 'Ticket has been removed'
-      }, { root: true })
+      context.commit('MESSAGE', messages.delete, { root: true })
       context.commit('REMOVE_TIKET', payload.id)
     }
   }

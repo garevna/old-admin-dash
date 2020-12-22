@@ -4,6 +4,10 @@ import modules from './modules'
 
 const { getData, postData } = require('@/helpers').default
 
+const errors = require('@/config/errors').default.rsp
+const messages = require('@/config/messages').default.rsp
+const endpoints = require('@/config/endpoints').default.rsp
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -47,34 +51,12 @@ export default new Vuex.Store({
   },
   actions: {
     async GET_RSP ({ state, commit }) {
-      const response = await getData('reseller')
-
-      if (!response.error) {
-        commit('UPDATE_RSP', response.data)
-      } else {
-        commit('ERROR', {
-          error: true,
-          errorType: 'GET RSP',
-          errorMessage: response.error
-        })
-      }
+      const response = await getData(endpoints.get)
+      response.error ? commit('ERROR', errors.get) : commit('UPDATE_RSP', response.data)
     },
     async POST_RSP (context, payload) {
-      const response = await postData('reseller', payload)
-
-      if (!response.error) {
-        context.commit('MESSAGE', {
-          message: true,
-          messageType: 'RSP preservation',
-          messageText: 'All RSP saved'
-        })
-      } else {
-        context.commit('ERROR', {
-          error: true,
-          errorType: 'RSP preservation error',
-          errorMessage: response.error
-        })
-      }
+      const response = await postData(endpoints.post, payload)
+      response.error ? context.commit('ERROR', errors.post) : context.commit('MESSAGE', messages.post)
     }
   }
 })

@@ -1,6 +1,8 @@
-/* eslint-disable no-unused-vars */
+const { getData, postData } = require('@/helpers').default
 
-const { getData, postData, putData } = require('@/helpers').default
+const errors = require('@/config/errors').default.registration
+const messages = require('@/config/messages').default.registration
+const endpoints = require('@/config/endpoints').default.registration
 
 const state = {
   tickets: []
@@ -22,7 +24,7 @@ const mutations = {
 const actions = {
 
   async GET_TICKETS ({ commit }) {
-    const response = await getData('ticket/registration')
+    const response = await getData(endpoints.get)
 
     if (!response.error) {
       const tickets = response.data
@@ -31,51 +33,28 @@ const actions = {
         }))
       commit('TICKETS', tickets)
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Reading Lead Requests',
-        errorMessage: 'Process failed...'
-      }, {
-        root: true
-      })
+      commit('ERROR', errors.get, { root: true })
     }
   },
 
   async ACCEPT_TICKET (context, { id, payload }) {
-    const response = await postData(`ticket/registration/accept/${id}`, payload)
+    const response = await postData(`${endpoints.accept}/${id}`, payload)
     if (!response.error) {
       context.dispatch('GET_RSP', null, { root: true })
-      context.commit('MESSAGE', {
-        message: true,
-        messageType: 'Accept Lead request',
-        messageText: 'Success'
-      }, { root: true })
+      context.commit('MESSAGE', messages.accept, { root: true })
       context.commit('REMOVE_TICKET_BY_ID', id)
     } else {
-      context.commit('ERROR', {
-        error: true,
-        errorType: 'Accept Lead request',
-        errorMessage: 'Process failed'
-      }, { root: true })
+      context.commit('ERROR', errors.accept, { root: true })
     }
   },
 
   async REJECT_TICKET ({ getters, commit, dispatch }, { id, payload }) {
-    const response = await postData(`ticket/registration/reject/${id}`, payload)
-
+    const response = await postData(`${endpoints.reject}/${id}`, payload)
     if (!response.error) {
-      commit('MESSAGE', {
-        message: true,
-        messageType: 'Reject Lead request',
-        messageText: 'Success'
-      }, { root: true })
+      commit('MESSAGE', messages.reject, { root: true })
       commit('REMOVE_TICKET_BY_ID', id)
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Reject Lead request',
-        errorMessage: 'Process failed'
-      }, { root: true })
+      commit('ERROR', errors.reject, { root: true })
     }
   }
 }

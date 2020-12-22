@@ -1,5 +1,9 @@
 const { getData, postData, putData, deleteData } = require('@/helpers').default
 
+const errors = require('@/config/errors').default.services
+const messages = require('@/config/messages').default.services
+const endpoints = require('@/config/endpoints').default.services
+
 const state = {
   services: {},
   serviceSchema: require('@/config/servicesSchema').default
@@ -22,7 +26,7 @@ const mutations = {
 
 const actions = {
   async GET_SERVICES ({ state, commit }) {
-    const response = await getData('service')
+    const response = await getData(endpoints.get)
     const services = {}
     if (!response.error) {
       for (const record of response.data) {
@@ -38,11 +42,7 @@ const actions = {
 
       commit('UPDATE_SERVICES', services)
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Reading services',
-        errorMessage: 'Process failed...'
-      }, { root: true })
+      commit('ERROR', errors.get, { root: true })
     }
     return services
   },
@@ -50,20 +50,12 @@ const actions = {
   async UPDATE_SERVICE ({ state, commit }, id) {
     const data = state.services[id]
     const body = Object.assign({}, ...Object.keys(data).map(propName => ({ [propName]: data[propName].value })))
-    const response = await putData(`service/${id}`, body)
+    const response = await putData(`${endpoints.put}/${id}`, body)
 
     if (!response.error) {
-      commit('MESSAGE', {
-        message: true,
-        messageType: 'Update service',
-        messageText: 'Success'
-      }, { root: true })
+      commit('MESSAGE', messages.update, { root: true })
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Update service',
-        errorMessage: 'Process failed...'
-      }, { root: true })
+      commit('ERROR', errors.update, { root: true })
     }
     return response
   },
@@ -71,25 +63,17 @@ const actions = {
   async CREATE_SERVICE ({ state, commit }) {
     const service = Object.assign({}, ...Object.keys(state.serviceSchema).map(propName => ({ [propName]: state.serviceSchema[propName].value })))
 
-    const response = await postData('service', service)
+    const response = await postData(endpoints.post, service)
 
     if (!response.error) {
       commit('UPDATE_SERVICE_BY_ID', { id: response.data, value: Object.assign({}, state.serviceSchema) })
-      commit('MESSAGE', {
-        message: true,
-        messageType: 'Creating new service',
-        messageText: 'Operation has succeeded'
-      }, { root: true })
+      commit('MESSAGE', messages.create, { root: true })
       return {
         id: response.data,
         service
       }
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Creating new service',
-        errorMessage: 'Operation failed...'
-      }, { root: true })
+      commit('ERROR', errors.create, { root: true })
       return null
     }
   },
@@ -99,17 +83,9 @@ const actions = {
 
     if (!response.error) {
       commit('REMOVE_SERVICE', id)
-      commit('MESSAGE', {
-        message: true,
-        messageType: 'Removing service',
-        messageText: 'Service has been removed forever'
-      }, { root: true })
+      commit('MESSAGE', messages.delete, { root: true })
     } else {
-      commit('ERROR', {
-        error: true,
-        errorType: 'Saving service',
-        errorMessage: 'Operation failed...'
-      }, { root: true })
+      commit('ERROR', errors.delete, { root: true })
     }
 
     return response

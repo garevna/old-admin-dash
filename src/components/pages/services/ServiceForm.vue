@@ -6,11 +6,7 @@
       </v-toolbar-title>
       <v-spacer />
       <v-btn icon @click="save">
-        <v-icon>$save</v-icon>
-      </v-btn>
-
-      <v-btn icon @click="$emit('update:showEdit', false)">
-        <v-icon>$close</v-icon>
+        <v-icon color="#900">$save</v-icon>
       </v-btn>
     </v-toolbar>
     <v-card-text
@@ -52,6 +48,9 @@
 <script>
 
 import { mapMutations, mapActions } from 'vuex'
+
+const errors = require('@/config/errors').default.services
+// const messages = require('@/config/messages').default.services
 
 export default {
   props: ['id', 'service'],
@@ -102,16 +101,15 @@ export default {
       showErrorMessage: 'ERROR'
     }),
     async upload (file) {
-      const response = await this._readFile(file)
-      if (response.error) {
-        this.showErrorMessage({
-          error: true,
-          errorType: 'Upload file',
-          errorMessage: 'Operation failed...'
-        })
+      if (file.type !== 'application/pdf') {
+        this.showErrorMessage(errors.uploadFileTypeError)
         return null
       }
-
+      const response = await this._readFile(file)
+      if (response.error) {
+        this.showErrorMessage(errors.upload)
+        return null
+      }
       return response
     },
     async save () {

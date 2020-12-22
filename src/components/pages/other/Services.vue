@@ -1,7 +1,7 @@
 <template>
   <v-container class="homefone">
     <v-row justify="center">
-      <v-col cols="12" md="6" lg="4">
+      <v-col cols="12" md="6" lg="5" xl="3">
         <v-card class="transparent">
           <v-toolbar dark>
             <v-spacer />
@@ -11,7 +11,7 @@
           </v-toolbar>
           <v-simple-table
             fixed-header
-            max-height="75vh"
+            max-height="500"
           >
             <template v-slot:default>
               <thead>
@@ -49,7 +49,7 @@
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="6" lg="4">
+      <v-col cols="12" md="6" lg="5" xs="3">
         <ServiceForm
           v-if="currentServiceId"
           :id="currentServiceId"

@@ -1,4 +1,5 @@
 export default async (path) => {
+  console.log(`${process.env.VUE_APP_API_URL}/${path}`)
   const response = await (await fetch(`${process.env.VUE_APP_API_URL}/${path}`, {
     method: 'GET',
     headers: {
