@@ -4,10 +4,6 @@ const errors = require('@/config/errors').default.common
 const messages = require('@/config/messages').default.common
 const endpoints = require('@/config/endpoints').default.common
 
-console.log(errors)
-console.log(messages)
-console.log(endpoints)
-
 const state = {
   tickets: []
 }

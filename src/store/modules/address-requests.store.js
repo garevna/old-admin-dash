@@ -10,9 +10,6 @@ const endpoints = {
   connection: require('@/config/endpoints').default.connection,
   connectivity: require('@/config/endpoints').default.connectivity
 }
-console.log(errors)
-console.log(messages)
-console.log(endpoints)
 
 const state = {
   types: ['connection', 'connectivity'],
