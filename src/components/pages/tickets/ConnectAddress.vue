@@ -30,7 +30,7 @@
                     <v-checkbox
                       :input-value="item.footprint"
                       readonly
-                      color="#E82F37"
+                      color="primary"
                     ></v-checkbox>
                   </td>
                   <td v-if="!item.footprint" class="text-center">
