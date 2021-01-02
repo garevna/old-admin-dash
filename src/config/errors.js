@@ -60,6 +60,16 @@ export default {
       error: true,
       errorType: 'Send message back',
       errorMessage: 'Process failed. Message has not been delivered'
+    },
+    status: {
+      error: true,
+      errorType: 'Change connection request status',
+      errorMessage: 'Process failed. Request status was not changed'
+    },
+    type: {
+      error: true,
+      errorType: 'Change connection request type',
+      errorMessage: 'Process failed. Request type was not changed'
     }
   },
 

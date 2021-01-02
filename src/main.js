@@ -13,6 +13,9 @@ Vue.config.productionTip = false
 
 Vue.prototype._readFile = require('@/helpers/readFile').default
 Vue.prototype._getBuildingsAPI = require('@/helpers/getBuildingsAPI').default
+Vue.prototype._getDate = function (ms) {
+  return ms ? (new Date(ms - 0)).toISOString().slice(0, 10) : ''
+}
 
 Vue.component('error-message', ErrorMessage)
 Vue.component('simple-message', Message)

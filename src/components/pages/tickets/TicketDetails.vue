@@ -1,110 +1,93 @@
 <template>
-  <v-card flat>
-    <v-card dark v-if="id" class="pa-0">
-      <v-toolbar dark>
-        <v-toolbar-title>
-          {{ currentTicket.createdAt }}
-        </v-toolbar-title>
-        <v-spacer />
-        <v-menu offset-y left>
-          <template v-slot:activator="{ on }">
-            <v-btn
-              icon
-              dark
-              v-on="on"
-            >
-              <v-icon>$menu</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="changeStatus" v-if="type === 'connectivity-research'">
-              <v-list-item-title>
-                Change status to connection request
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="changeStatus" v-if="type === 'connection-request'">
-              <v-list-item-title>
-                Resolve request
-              </v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="moveToArchive">
-              <v-list-item-title>
-                Move to archive
-              </v-list-item-title>
-            </v-list-item>
-            <!-- <v-list-item @click="moveToTrash">
-              <v-list-item-title>
-                Move to trash (delete)
-              </v-list-item-title>
-            </v-list-item> -->
-          </v-list>
-        </v-menu>
-      </v-toolbar>
-
-      <v-simple-table
-        dark
-        height="75%"
-      >
+  <v-row v-if="opened">
+    <v-col cols="12" lg="6">
+      <v-simple-table>
         <template v-slot:default>
           <tbody>
             <tr>
-              <td>RSP</td>
-              <td>{{ currentRSP.company || currentRSP.name }}</td>
+              <td width="160">RSP</td>
+              <td><b>{{ currentRSP.company || currentRSP.name }}</b></td>
             </tr>
             <tr class="my-2">
-              <td>Address</td>
+              <td>Contact person</td>
               <td>
-                <span style="color: #09b">{{ currentTicket.address }}</span>
+                <b>{{ currentRSP.contactPersonDetails }}</b>
               </td>
             </tr>
-            <!-- <tr>
-              <td>Apt.num</td>
-              <td>{{ currentTicket.apartmentNumber }}</td>
-            </tr> -->
-            <tr v-if="currentTicket.footprint">
-              <td>Footprint</td>
-              <td><v-checkbox :input-value="currentTicket.footprint" readonly color="#09b" /></td>
-            </tr>
-            <tr v-if="!currentTicket.footprint">
-              <td> Distance from the footprint </td>
-              <td>
-                <span style="color: #E82F37">{{ Math.round(currentTicket.distanceFromFootprint) }}</span> <small>m</small>
+            <tr>
+              <td rowspan="2">Tariff</td>
+              <td style="padding: 0">
+                <v-expansion-panels flat>
+                  <v-expansion-panel>
+                    <v-expansion-panel-header>
+                      <b> {{ currentTariff.tariffName || '?' }} </b>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-simple-table dense>
+                        <template v-slot:default>
+                          <tbody>
+                            <tr>
+                              <td class="tariff">Downstream Speed</td>
+                              <td class="tariff"> {{ currentTariff.downstreamSpeed || '' }} </td>
+                            </tr>
+                            <tr>
+                              <td class="tariff">Upstream Speed</td>
+                              <td class="tariff"> {{ currentTariff.upstreamSpeed || '' }} </td>
+                            </tr>
+                            <tr>
+                              <td class="tariff">Data Limit</td>
+                              <td class="tariff"> {{ currentTariff.dataLimit || '' }} </td>
+                            </tr>
+                            <tr>
+                              <td class="tariff">Price</td>
+                              <td class="tariff"> {{ currentTariff.price || '' }} </td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
               </td>
             </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </v-col>
+    <v-col cols="12" lg="6">
+      <v-simple-table>
+        <template v-slot:default>
+          <tbody>
             <tr v-if="currentTicket.message">
-              <td>Message from RSP</td>
-              <td>{{ currentTicket.message }}</td>
+              <td>
+                <v-icon color="primary">$messageFrom</v-icon>
+              </td>
+              <td class="text--black">{{ currentTicket.message }}</td>
             </tr>
             <tr
               v-for="(item, index) in currentTicket.history"
               :key="index"
             >
-              <td>{{ item.emitor }}</td>
+              <td>
+                <v-icon :color="color(item.emitor)">
+                  {{ item.emitor !== 'admin'? '$messageFrom' : '$messageTo' }}
+                </v-icon>
+              </td>
               <td>{{ item.message }}</td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-    </v-card>
-    <v-card flat v-if="currentTicket" class="mt-6">
-      <v-toolbar flat>
-        <v-toolbar-title>
-          <p>Send message back</p>
-        </v-toolbar-title>
-        <v-spacer />
-        <v-btn
-          v-if="messageBack.length > 0"
-          icon
-          @click="sendMessage"
-        >
-          <v-icon>$send</v-icon>
-        </v-btn>
-      </v-toolbar>
       <v-card-text>
-        <v-textarea v-model="messageBack" />
+        <v-text-field
+          v-model="messageBack"
+          label="Send message back"
+          append-outer-icon="$send"
+          @click:append-outer="sendMessage"
+        />
       </v-card-text>
-    </v-card>
-  </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -112,7 +95,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'TicketDetails',
-  props: ['id', 'type'],
+  props: ['id', 'type', 'opened'],
 
   data: () => ({
     messageBack: ''
@@ -120,16 +103,31 @@ export default {
 
   computed: {
     ...mapState('address-requests', ['tickets']),
-    ...mapState(['rsp']),
+    ...mapState(['rsp', 'tariffs']),
     currentTicket () {
       return this.tickets.find(item => item._id === this.id)
     },
 
+    currentTariff () {
+      const tariff = this.tariffs.find(item => item._id === this.currentTicket.tariffId)
+      return tariff || {}
+    },
+
     currentRSP () {
-      const id = this.currentTicket.resellerId
-      return this.rsp.find(item => item._id === id) || {}
+      const rsp = this.rsp.find(item => item._id === this.currentTicket.resellerId)
+      return rsp
     }
   },
+
+  // watch: {
+  //   currentTicket: {
+  //     deep: true,
+  //     handler (val) {
+  //       this.$store.dispatch('GET_ALL_TICKETS_OF_RSP', val.resellerId)
+  //         .then(response => console.log('ALL RSP TICKETS:\n', response))
+  //     }
+  //   }
+  // },
 
   methods: {
     ...mapMutations('address-requests', {
@@ -138,12 +136,10 @@ export default {
     ...mapActions('address-requests', {
       sendMessageBack: 'SEND_MESSAGE_WITH_CURRENT_TICKET'
     }),
+    color (emiter) {
+      return emiter === 'admin' ? '#333' : this.$vuetify.theme.themes.light.primary
+    },
     sendMessage () {
-      this.currentTicket.history.push({
-        createdAt: Date.now(),
-        emitor: 'admin',
-        message: this.messageBack
-      })
       this.sendMessageBack({
         id: this.id,
         historyElement: {
@@ -151,6 +147,15 @@ export default {
           emitor: 'admin',
           message: this.messageBack
         }
+      }).then((response) => {
+        if (response) {
+          this.currentTicket.history.push({
+            createdAt: Date.now(),
+            emitor: 'admin',
+            message: this.messageBack
+          })
+        }
+        this.messageBack = ''
       })
     },
     moveToArchive () {
@@ -169,7 +174,12 @@ export default {
 </script>
 
 <style scoped>
-td, th {
-  color: #fff !important;
+.tariff {
+  font-size: 12px!important;
+}
+</style>
+<style>
+.v-application--is-ltr .v-text-field .v-label {
+  font-size: 12px;
 }
 </style>

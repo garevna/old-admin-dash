@@ -15,13 +15,21 @@ export default {
     patch: 'reseller',
     delete: 'reseller'
   },
+  tariffs: {
+    get: 'tariff',
+    post: 'tariff',
+    put: 'tariff',
+    delete: 'tariff'
+  },
   connection: {
     get: 'ticket/connection-request',
     post: 'ticket/connection-request',
     put: 'ticket/connection-request',
     patch: 'ticket/connection-request',
     delete: 'ticket/connection-request',
-    history: 'ticket/connection-request/set-history'
+    history: 'ticket/connection-request/set-history',
+    type: 'ticket/connection-request/set-type',
+    status: 'ticket/connection-request/set-status'
   },
   connectivity: {
     get: 'ticket/connectivity-research',
@@ -29,7 +37,9 @@ export default {
     put: 'ticket/connection-request',
     patch: 'ticket/connection-request',
     delete: 'ticket/connection-request',
-    history: 'ticket/connection-request/set-history'
+    history: 'ticket/connection-request/set-history',
+    type: 'ticket/connection-request/set-type',
+    status: 'ticket/connection-request/set-status'
   },
   common: {
     get: 'ticket/common',

@@ -25,7 +25,6 @@ const actions = {
 
   async GET_TICKETS ({ commit }) {
     const response = await getData(endpoints.get)
-
     if (!response.error) {
       const tickets = response.data
         .map(item => Object.assign({}, item, {

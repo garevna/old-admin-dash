@@ -1,38 +1,79 @@
 <template>
-  <v-container>
+  <v-container class="homefone">
     <v-row justify="center">
-      <v-col cols="12" md="6" lg="3">
-        <v-card flat class="transparent" max-height="75%">
-          <v-simple-table
+      <v-col cols="12" lg="10" xl="8">
+        <v-card flat class="transparent pa-4 mt-4 mb-12">
+          <v-card-actions>
+            <v-spacer />
+            <v-btn icon @click="getTickets">
+              <v-icon color="#444"> mdi-reload </v-icon>
+            </v-btn>
+          </v-card-actions>
+          <v-data-table
             fixed-header
+            :headers="headers"
+            :items="tickets"
+            item-key="_id"
+            :sort-by="['createdAt', 'company']"
+            :sort-desc="[false, true]"
+            multi-sort
+            :expanded.sync="expanded"
+            single-expand
+            show-expand
+            class="transparent elevation-0"
+            height="70vh"
           >
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th style="width: 160px"> Date (created) </th>
-                  <th style="width: 340px"> Company </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, index) in tickets"
-                  :key="index"
-                  @click="currentId = item._id"
-                >
-                  <td> {{ item.createdAt }} </td>
-                  <td> {{ item.rsp.company }} </td>
-                  <!-- <td> {{ item.rsp.email }} </td>
-                  <td> {{ item.rsp.phone }} </td>
-                  <td> {{ item.rsp.contactPersonDetails }} </td> -->
-                </tr>
-              </tbody>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                <CommonDetails
+                  opened="expanded[0] && expanded[0]._id === item._id"
+                  :id="item._id"
+                />
+              </td>
             </template>
-          </v-simple-table>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6" lg="5">
-        <v-card max-height="50%">
-          <CommonDetails :id.sync="currentId"/>
+            <template v-slot:item.notAnswered="{ item }">
+              <v-icon color="#900">
+                {{ notAnswered(item) ? 'mdi-comment-question' : '' }}
+              </v-icon>
+            </template>
+            <template v-slot:item.role="{ item }">
+              <v-chip
+                :color="!item.role ? '#900' : item.role === 'RSP' ? '#555' : '#fa0'"
+                dark
+              >
+                <small>{{ item.role || '?' }}</small>
+              </v-chip>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-tooltip bottom color="info">
+                <template v-slot:activator="{ on }">
+                  <v-btn icon v-on="on">
+                    <v-icon
+                      class="mr-2"
+                      @click="archive(item)"
+                      color="#777"
+                    >
+                      $archive
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span>Move to archive</span>
+              </v-tooltip>
+              <v-tooltip bottom color="primary">
+                <template v-slot:activator="{ on }">
+                  <v-btn icon v-on="on">
+                    <v-icon
+                      @click="remove(item)"
+                      color="#777"
+                    >
+                      $delete
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span>Delete ticket</span>
+              </v-tooltip>
+            </template>
+          </v-data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -52,51 +93,25 @@ export default {
   },
 
   data: () => ({
-    currentId: null,
-    dialog: false,
-    detailInfo: [
-      {
-        text: 'Name',
-        prop: 'name'
-      },
-      {
-        text: 'Email',
-        prop: 'email'
-      },
-      {
-        text: 'Subject',
-        prop: 'subject'
-      },
-      {
-        text: 'Description',
-        prop: 'description'
-      }
-    ],
-    options: [
-      {
-        header: 'Name',
-        style: 'width:15%;',
-        prop: 'name'
-      },
-      {
-        header: 'Email',
-        style: 'width:25%;',
-        prop: 'email'
-      },
-      {
-        header: 'Subject',
-        style: 'width:10%;',
-        prop: 'subject'
-      },
-      {
-        header: 'Description',
-        style: 'width:50%;',
-        prop: 'description'
-      }
-    ]
+    messageBack: '',
+    expanded: []
   }),
   computed: {
-    ...mapState('common', ['tickets', 'ticketsError', 'ticketsLoading']),
+    ...mapState('common', ['tickets']),
+    headers () {
+      return [
+        {
+          text: 'Waiting',
+          value: 'notAnswered'
+        },
+        { text: 'Data', value: 'createdAt' },
+        { text: 'Role', value: 'role' },
+        { text: 'Company', value: 'company' },
+        { text: 'Subject', value: 'subject' },
+        { text: 'Actions', value: 'actions', sortable: false },
+        { text: '', value: 'data-table-expand' }
+      ]
+    },
     currentTicket () {
       return this.tickets.find(ticket => ticket._id === this.currentId)
     }
@@ -104,7 +119,10 @@ export default {
   methods: {
     ...mapActions('common', {
       getTickets: 'GET_TICKETS'
-    })
+    }),
+    notAnswered (item) {
+      return !item.history.length || item.history[item.history.length - 1].emitor !== 'admin'
+    }
   },
   created () {
     this.getTickets()

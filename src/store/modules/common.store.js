@@ -1,4 +1,4 @@
-const { getData, deleteData, patchData } = require('@/helpers').default
+const { getData, putData, deleteData, patchData } = require('@/helpers').default
 
 const errors = require('@/config/errors').default.common
 const messages = require('@/config/messages').default.common
@@ -10,7 +10,7 @@ const state = {
 
 const getters = {
   getClientById (state, getters, rootState) {
-    return id => rootState.rsp.find(reseller => reseller._id === id)
+    return id => rootState.rsp.find(reseller => reseller._id === id) || {}
   },
   getClientByIndex (state, getters, rootState) {
     return index => rootState.rsp[index]
@@ -45,8 +45,8 @@ const actions = {
       const tickets = response.data
         .map((item, index) => Object.assign({}, item, {
           createdAt: context.getters.getTicketDate(item),
-          rsp: context.getters.getClientById(item.name) ? context.getters.getClientById(item.name)
-            : context.getters.getClientByIndex(0)
+          company: context.getters.getClientById(item.resellerId).company,
+          role: context.getters.getClientById(item.resellerId).role
         }))
       context.commit('TICKETS', tickets)
     } else {
@@ -60,7 +60,6 @@ const actions = {
     if (response.error) {
       context.commit('ERROR', errors.history, { root: true })
     } else {
-      console.log(messages.history)
       context.commit('MESSAGE', messages.history, { root: true })
     }
   },
@@ -73,6 +72,17 @@ const actions = {
     } else {
       context.commit('MESSAGE', messages.delete, { root: true })
       context.commit('REMOVE_TIKET', payload.id)
+    }
+  },
+
+  async FIX_DB_ERRORS (context) {
+    const tickets = (await getData(endpoints.get)).data
+
+    for (const ticket of tickets) {
+      if (!ticket.resellerId || !context.rootState.rsp.find(item => item._id === ticket.resellerId)) {
+        const resellerId = context.rootState.rsp[Math.round(Math.random() * (context.rootState.rsp.length - 1))]
+        await putData(`${endpoints.put}/${ticket._id}`, Object.assign(ticket, { resellerId }))
+      }
     }
   }
 }

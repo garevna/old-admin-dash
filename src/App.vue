@@ -1,13 +1,31 @@
 <template>
   <v-app>
-    <v-main v-if="ready">
+    <v-main v-if="ready" class="homefone">
       <Tickets v-if="!navigate || navigate === 'tickets'" />
       <!-- <EndCustomer v-if="navigate === 'customers'" /> -->
+      <!-- <v-container>
+        <v-row justify="center" class="mt-8">
+          <v-col cols="12" md="6" lg="5" xl="4" style="border: solid 1px #777">
+            <v-card flat height="75vh" class="transparent"></v-card>
+          </v-col>
+          <v-col cols="12" md="6" lg="5" xl="4" style="border: solid 1px #777">
+            <v-card flat height="75vh" class="transparent"></v-card>
+          </v-col>
+        </v-row>
+      </v-container> -->
       <RSP v-if="navigate === 'resellers'" />
       <Other v-if="navigate === 'other'" />
     </v-main>
 
-    <v-bottom-navigation fixed v-model="navigate" color="#079" class="py-1">
+    <v-bottom-navigation
+      fixed
+      flat
+      dark
+      v-model="navigate"
+      color="#fff"
+      background-color="#333"
+      class="pt-2"
+    >
 
       <v-btn value="tickets">
         <span>Tickets</span>
@@ -44,6 +62,19 @@
 * {
   user-select: none;
 }
+tr.v-data-table__expanded.v-data-table__expanded__row {
+  background: #444 !important;
+  color: #fff !important;
+}
+tr.v-data-table__expanded.v-data-table__expanded__row .v-icon.v-icon {
+  color: #fff !important;
+}
+td {
+  user-select: text;
+}
+::-webkit-scrollbar-thumb {
+    background: #dadada;
+}
 </style>
 
 <script>
@@ -68,7 +99,11 @@ export default {
   }),
   methods: {
     ...mapActions({
-      getRSP: 'GET_RSP'
+      getRSP: 'GET_RSP',
+      getTariffs: 'GET_TARIFFS'
+    }),
+    ...mapActions('common', {
+      fixErrors: 'FIX_DB_ERRORS'
     }),
     ...mapMutations({
       showMessage: 'MESSAGE',
@@ -93,10 +128,12 @@ export default {
     }
   },
   created () {
+    this.getTariffs()
     this.getRSP().then(() => { this.ready = true })
   },
   mounted () {
     this.navigate = 'tickets'
+    // this.fixErrors()
   }
 }
 </script>

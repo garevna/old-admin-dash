@@ -7,6 +7,8 @@ export default new Vuetify({
   icons: {
     iconfont: 'mdi',
     values: {
+      accept: 'mdi-check-network',
+      reject: 'mdi-close-network',
       accounts: 'mdi-account-box-multiple',
       archive: 'mdi-archive',
       add: 'mdi-note-plus',
@@ -32,6 +34,8 @@ export default new Vuetify({
       marker: 'mdi-map-marker',
       menu: 'mdi-dots-vertical',
       message: 'mdi-message-reply-text',
+      messageFrom: 'mdi-message-arrow-right',
+      messageTo: 'mdi-message-arrow-left',
       orders: 'mdi-printer',
       other: 'mdi-folder-table',
       pdf: 'mdi-file-pdf',
@@ -58,7 +62,9 @@ export default new Vuetify({
         inputs: '#EFEFEF',
         activefield: '#D9D9D9',
         warning: '#FAFF00',
-        info: '#fbfbfb'
+        // info: '#fbfbfb',
+        info: '#09b',
+        accept: '#070'
       },
       dark: {
         primary: '#FF0E00',
@@ -66,8 +72,10 @@ export default new Vuetify({
         buttons: '#F54436',
         homefone: '#FEFEFE',
         fields: '#EFEFEF',
-        activefield: '#D9D9D9',
-        warning: '#FAFF00'
+        activefield: '#444',
+        warning: '#FAFF00',
+        info: '#09b',
+        accept: '#070'
       }
     }
   }

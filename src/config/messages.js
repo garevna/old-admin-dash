@@ -38,6 +38,16 @@ export default {
       message: true,
       messageType: 'Send message back',
       messageText: 'Success. Message has been delivered'
+    },
+    status: {
+      message: true,
+      messageType: 'Success',
+      messageText: 'Connection request status has been changed'
+    },
+    type: {
+      message: true,
+      messageType: 'Success',
+      messageText: 'Connection request type has been changed'
     }
   },
   common: {
