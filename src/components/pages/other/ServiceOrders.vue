@@ -1,47 +1,68 @@
 <template>
   <v-container class="mb-12">
-    <v-row justify="center">
-      <v-col cols="12" lg="4">
-        <v-card flat class="transparent my-2 mx-0">
-          <v-simple-table
-            fixed-header
-            max-height="75%"
+    <v-navigation-drawer absolute
+      floating
+      class="homefone"
+      v-model="drawer"
+      :mini-variant.sync="mini"
+      width="480"
+    >
+        <v-list-item class="px-2">
+          <v-btn icon large>
+            <v-icon>$pdf</v-icon>
+          </v-btn>
+
+          <v-list-item-title class="ml-4">
+            <v-row>
+              <v-col cols="6">
+                <small>Company</small>
+              </v-col>
+              <v-col cols="6">
+                <small>Product/Service Type</small>
+              </v-col>
+            </v-row>
+
+          </v-list-item-title>
+
+          <v-btn
+            icon
+            @click.stop="mini = !mini"
           >
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th style="width: 160px"> Product/Service Type </th>
-                  <th style="width: 340px"> Company Name </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, index) in serviceOrders"
-                  :key="index"
-                  @click="currentOrderId = item._id"
-                >
-                  <td>{{ item.product }}</td>
-                  <td>{{ item.companyName }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-card>
-      </v-col>
-      <v-col cols="12" lg="8">
-        <ServiceDetails
-          v-if="currentOrderId"
-          :data.sync="currentOrder"
-        />
-      </v-col>
-    </v-row>
+            <v-icon>mdi-menu-left-outline</v-icon>
+          </v-btn>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-item
+            v-for="(item, index) in serviceOrders"
+            :key="index"
+            link
+          >
+            <v-list-item-icon></v-list-item-icon>
+
+          <v-list-item-content @click="click(item)">
+            <v-row>
+              <v-col cols="6">
+                <v-list-item-title class="text-left">{{ item.companyName }}</v-list-item-title>
+              </v-col>
+              <v-col cols="6">
+                <v-list-item-title class="text-left">{{ item.product }}</v-list-item-title>
+              </v-col>
+            </v-row>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <ServiceDetails
+      v-if="currentOrderId"
+      :data.sync="currentOrder"
+      class="mt-12"
+    />
   </v-container>
 </template>
-
-<style lang="scss" scoped>
-.info-section {
-}
-</style>
 
 <script>
 
@@ -53,7 +74,8 @@ export default {
   data: () => ({
     serviceOrders: require('@/config/service-orders-mock-data').default,
     currentOrderId: null,
-    dialog: false
+    drawer: true,
+    mini: true
   }),
   computed: {
     currentOrder () {
@@ -64,6 +86,12 @@ export default {
     currentOrderId (val) {
       if (!val) return
       this.dialog = true
+    }
+  },
+  methods: {
+    click (item) {
+      this.mini = true
+      this.currentOrderId = item._id
     }
   }
 }

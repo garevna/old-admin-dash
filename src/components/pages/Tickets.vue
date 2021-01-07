@@ -3,7 +3,7 @@
     <v-app-bar app flat>
       <v-toolbar flat class="transparent">
         <v-toolbar-title>
-          <h5><v-icon color="#900">{{ currentIcon }}</v-icon> {{ currentType }}</h5>
+          <h5><v-icon color="primary">{{ currentIcon }}</v-icon> {{ currentType }}</h5>
           <h6>{{ currentDescription }}</h6>
         </v-toolbar-title>
         <v-spacer />

@@ -5,95 +5,28 @@
         <template v-slot:default>
           <tbody>
             <tr>
-              <v-expansion-panels class="transparent">
-                <v-expansion-panel>
-                  <v-expansion-panel-header>
-                    <b> {{ currentTicket.company || 'Unknown' }} </b>
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-simple-table dense>
-                      <template v-slot:default>
-                        <tbody>
-                          <tr>
-                            <th> Email </th>
-                            <td> {{ currentRSP.email }} </td>
-                          </tr>
-                          <tr>
-                            <th> Phone </th>
-                            <td> {{ currentRSP.phone }} </td>
-                          </tr>
-                          <tr>
-                            <th> Address </th>
-                            <td> {{ currentRSP.address }} </td>
-                          </tr>
-                          <tr>
-                            <th> Contact Person</th>
-                            <td> {{ currentRSP.contactPersonDetails }} </td>
-                          </tr>
-                          <tr>
-                            <th> Contact Phone</th>
-                            <td> {{ currentRSP.contactPhone }} </td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
+              <Profile :user="currentUser" />
             </tr>
           </tbody>
         </template>
       </v-simple-table>
     </v-col>
     <v-col cols="12" lg="6">
-      <v-card-text>
-        <v-icon color="#900">$messageFrom</v-icon>
-        {{ currentTicket.description }}
-      </v-card-text>
-      <v-expansion-panels v-if="currentTicket.history.length">
-        <v-expansion-panel>
-          <v-expansion-panel-header>
-            <v-icon color="#444">mdi-account-voice</v-icon>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-simple-table dense>
-              <template v-slot:default>
-                <tbody>
-                  <tr
-                    v-for="(item, index) in currentTicket.history"
-                    :key="index"
-                  >
-                    <td>
-                      <v-icon :color="color(item.emitor)">
-                        {{ item.emitor !== 'admin'? '$messageFrom' : '$messageTo' }}
-                      </v-icon>&nbsp;
-                      <small>{{ _getDate(item.createdAt) }}</small>
-                    </td>
-                    <td>{{ item.message }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-      <v-card-text>
-        <v-text-field
-          v-model="messageBack"
-          label="Send message"
-          append-outer-icon="$send"
-          @click:append-outer="sendMessage"
-        />
-      </v-card-text>
+      <!-- <h5>{{ currentTicket.description }}</h5> -->
+      <Chat :message.sync="messageBack" :ticket="currentTicket" />
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'CommonDetails',
+  components: {
+    Profile: () => import('@/components/pages/tickets/Profile.vue'),
+    Chat: () => import('@/components/pages/tickets/Chat.vue')
+  },
   props: ['id', 'opened', 'message'],
 
   data: () => ({
@@ -101,17 +34,16 @@ export default {
   }),
 
   computed: {
-    ...mapState(['rsp']),
     ...mapState('common', ['tickets']),
+    ...mapGetters(['getUserById']),
     validate () {
       return this.messageBack.length
     },
     currentTicket () {
       return this.tickets.find(item => item._id === this.id)
     },
-    currentRSP () {
-      console.log(this.rsp.find(item => item._id === this.currentTicket.resellerId) || {})
-      return this.rsp.find(item => item._id === this.currentTicket.resellerId) || {}
+    currentUser () {
+      return this.getUserById(this.currentTicket.resellerId)
     },
     currentHistory () {
       return this.currentTicket.history
@@ -123,15 +55,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('common', {
-      sendMessageBack: 'SEND_MESSAGE',
-      remove: 'REMOVE_TIKET'
-    }),
     clear () {
       this.messageBack = ''
     },
     color (emiter) {
-      return emiter === 'admin' ? '#333' : this.$vuetify.theme.themes.light.primary
+      return emiter === 'admin' ? '#333' : this.$vuetify.theme.themes.light.warning
     },
     sendMessage () {
       this.currentTicket.history.push({
@@ -148,14 +76,6 @@ export default {
         }
       })
       this.clear()
-    },
-    moveToArchive () {
-      this.remove(this.id)
-      this.$emit('update:id', null)
-    },
-    moveToTrash () {
-      this.remove(this.id)
-      this.$emit('update:id', null)
     }
   }
 }

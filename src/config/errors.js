@@ -22,15 +22,23 @@ export default {
     }
   },
 
+  users: {
+    get: {
+      error: true,
+      errorType: 'Reading users',
+      errorMessage: 'Process failed... Data was not received'
+    }
+  },
+
   rsp: {
     get: {
       error: true,
-      errorType: 'Reading RSP list',
+      errorType: 'Reading rsp list',
       errorMessage: 'Process failed... Data was not received'
     },
     post: {
       error: true,
-      errorType: 'RSP preservation error',
+      errorType: 'User preservation error',
       errorMessage: 'Process failed... Data was not saved'
     }
   },
@@ -88,6 +96,34 @@ export default {
       error: true,
       errorType: 'Send message back',
       errorMessage: 'Process failed. Message has not been delivered'
+    }
+  },
+
+  tariff: {
+    get: {
+      error: true,
+      errorType: 'Reading tariffs',
+      errorMessage: 'Process failed...'
+    },
+    create: {
+      error: true,
+      errorType: 'Creating new tariff',
+      errorMessage: 'Operation failed. New tariff was not created'
+    },
+    update: {
+      error: true,
+      errorType: 'Update tariff',
+      errorMessage: 'Process failed. Tariff was not updated'
+    },
+    delete: {
+      error: true,
+      errorType: 'Delete tariff',
+      errorMessage: 'Operation failed. Tariff was not deleted'
+    },
+    id: {
+      error: true,
+      errorType: 'Delete tariff',
+      errorMessage: 'Operation failed. Select tariff before deleting'
     }
   },
 

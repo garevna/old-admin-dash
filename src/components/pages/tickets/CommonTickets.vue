@@ -1,11 +1,11 @@
 <template>
-  <v-container class="homefone">
+  <v-container class="homefone" :style="{ opacity: blur, transition: 'all .5s ease' }">
     <v-row justify="center">
       <v-col cols="12" lg="10" xl="8">
         <v-card flat class="transparent pa-4 mt-4 mb-12">
           <v-card-actions>
             <v-spacer />
-            <v-btn icon @click="getTickets">
+            <v-btn icon @click="reload">
               <v-icon color="#444"> mdi-reload </v-icon>
             </v-btn>
           </v-card-actions>
@@ -63,7 +63,7 @@
                 <template v-slot:activator="{ on }">
                   <v-btn icon v-on="on">
                     <v-icon
-                      @click="remove(item)"
+                      @click="remove(item._id)"
                       color="#777"
                     >
                       $delete
@@ -82,7 +82,7 @@
 
 <script>
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Common',
@@ -94,7 +94,8 @@ export default {
 
   data: () => ({
     messageBack: '',
-    expanded: []
+    expanded: [],
+    blur: 1
   }),
   computed: {
     ...mapState('common', ['tickets']),
@@ -116,10 +117,26 @@ export default {
       return this.tickets.find(ticket => ticket._id === this.currentId)
     }
   },
+  watch: {
+    tickets: {
+      immediate: true,
+      deep: true,
+      handler (val) {
+        this.blur = 1
+      }
+    }
+  },
   methods: {
     ...mapActions('common', {
-      getTickets: 'GET_TICKETS'
+      getTickets: 'GET_TICKETS',
+      remove: 'REMOVE_TIKET'
     }),
+    ...mapGetters(['rsp', 'corporateClient']),
+    reload () {
+      this.expanded = []
+      this.blur = 0
+      this.getTickets()
+    },
     notAnswered (item) {
       return !item.history.length || item.history[item.history.length - 1].emitor !== 'admin'
     }

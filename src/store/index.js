@@ -2,34 +2,32 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import modules from './modules'
 
-const { getData, postData } = require('@/helpers').default
+const { getData } = require('@/helpers').default
 
-const errors = require('@/config/errors').default.rsp
-const messages = require('@/config/messages').default.rsp
-const endpoints = require('@/config/endpoints').default.rsp
-const tariff = require('@/config/endpoints').default.tariffs
+const errors = require('@/config/errors').default.users
+const endpoints = require('@/config/endpoints').default.users
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    rsp: null,
-    tariffs: null,
+    users: null,
     error: null,
     errorMessage: '',
     errorType: '',
     message: null,
     messageType: '',
-    messageText: '',
-    loading: null
+    messageText: ''
   },
   modules,
+  getters: {
+    getUserById: (state) => (id) => state.users.find(user => user._id === id) || {},
+    rsp: (state) => state.users.filter(user => user.role === 'RSP'),
+    corporateClient: (state) => state.users.filter(user => user.role === 'Corporate partner')
+  },
   mutations: {
-    UPDATE_RSP (state, payload) {
-      state.rsp = payload
-    },
-    UPDATE_TARIFFS (state, payload) {
-      state.tariffs = payload
+    UPDATE_USERS (state, payload) {
+      state.users = payload
     },
     ERROR (state, payload) {
       if (!payload) {
@@ -55,24 +53,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async GET_RSP ({ state, commit }) {
+    async GET_USERS ({ state, commit }) {
       const response = await getData(endpoints.get)
-      response.error ? commit('ERROR', errors.get) : commit('UPDATE_RSP', response.data)
-    },
-    async POST_RSP (context, payload) {
-      const response = await postData(endpoints.post, payload)
-      response.error ? context.commit('ERROR', errors.post) : context.commit('MESSAGE', messages.post)
-    },
-    async GET_TARIFFS (context, id) {
-      const response = (await getData(tariff.get)).data
-      context.commit('UPDATE_TARIFFS', response)
-      return response
-    },
-    async GET_ALL_TICKETS_OF_RSP (context, id) {
-      const response1 = (await getData(`ticket/connection-request/by-rsp/${id}`)).data
-      const response2 = (await getData(`ticket/connectivity-research/by-rsp/${id}`)).data
-      const response3 = response1.concat(response2)
-      return response3
+      if (response.error) {
+        commit('ERROR', errors.get)
+        return
+      }
+      commit('UPDATE_USERS', response.data)
     }
   }
 })

@@ -14,8 +14,8 @@ export default {
   rsp: {
     post: {
       message: true,
-      messageType: 'RSP list data saving',
-      messageText: 'All RSP have been saved'
+      messageType: 'Data saving',
+      messageText: 'Users have been saved'
     }
   },
   address: {
@@ -60,6 +60,23 @@ export default {
       message: true,
       messageType: 'Send message back',
       messageText: 'Success. Message has been delivered'
+    }
+  },
+  tariff: {
+    create: {
+      message: true,
+      messageType: 'Creating new tariff',
+      messageText: 'Operation has succeeded. New tariff has been created'
+    },
+    update: {
+      message: true,
+      messageType: 'Update tariff',
+      messageText: 'Success. Tariff has been updated'
+    },
+    delete: {
+      message: true,
+      messageType: 'Delete tariff',
+      messageText: 'Tariff has been deleted'
     }
   },
   services: {

@@ -1,11 +1,11 @@
 <template>
-  <v-container class="homefone">
+  <v-container class="homefone" :style="{ opacity: blur, transition: 'all .5s ease' }">
     <v-row justify="center">
       <v-col cols="12" lg="10" xl="8">
         <v-card flat class="transparent pa-4 mt-4 mb-12">
           <v-card-actions>
             <v-spacer />
-            <v-btn icon @click="getAllLeadRequests">
+            <v-btn icon @click="reload">
               <v-icon color="#444"> mdi-reload </v-icon>
             </v-btn>
           </v-card-actions>
@@ -89,7 +89,8 @@ export default {
     role: '',
     message: '',
     action: null,
-    expanded: []
+    expanded: [],
+    blur: 1
   }),
   computed: {
     ...mapState('registration', ['tickets']),
@@ -102,6 +103,15 @@ export default {
       ]
     }
   },
+  watch: {
+    tickets: {
+      immediate: true,
+      deep: true,
+      handler (val) {
+        this.blur = 1
+      }
+    }
+  },
   methods: {
     ...mapActions('registration', {
       getAllLeadRequests: 'GET_TICKETS',
@@ -112,6 +122,11 @@ export default {
       showMessage: 'MESSAGE',
       showError: 'ERROR'
     }),
+    reload () {
+      this.expanded = []
+      this.blur = 0
+      this.getAllLeadRequests()
+    },
     accept (user) {
       if (!this.role) {
         this.showError({

@@ -34,7 +34,7 @@
 
       <v-btn value="resellers">
         <span>RSP</span>
-        <v-icon>$accounts</v-icon>
+        <v-icon>$rsp</v-icon>
       </v-btn>
 
       <v-btn value="customers">
@@ -69,6 +69,14 @@ tr.v-data-table__expanded.v-data-table__expanded__row {
 tr.v-data-table__expanded.v-data-table__expanded__row .v-icon.v-icon {
   color: #fff !important;
 }
+.v-application--is-ltr .v-text-field .v-label {
+    font-size: 12px !important;
+}
+table, .v-data-table,
+.theme--light.v-expansion-panels .v-expansion-panel,
+.theme--light.v-data-table.v-data-table--fixed-header thead th {
+  background: transparent!important;
+}
 td {
   user-select: text;
 }
@@ -99,7 +107,9 @@ export default {
   }),
   methods: {
     ...mapActions({
-      getRSP: 'GET_RSP',
+      getUsers: 'GET_USERS'
+    }),
+    ...mapActions('tariff', {
       getTariffs: 'GET_TARIFFS'
     }),
     ...mapActions('common', {
@@ -129,11 +139,10 @@ export default {
   },
   created () {
     this.getTariffs()
-    this.getRSP().then(() => { this.ready = true })
+    this.getUsers().then(() => { this.ready = true })
   },
   mounted () {
     this.navigate = 'tickets'
-    // this.fixErrors()
   }
 }
 </script>

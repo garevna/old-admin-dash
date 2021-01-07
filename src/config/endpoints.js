@@ -8,6 +8,9 @@ export default {
     accept: 'ticket/registration/accept',
     reject: 'ticket/registration/reject'
   },
+  users: {
+    get: 'user'
+  },
   rsp: {
     get: 'reseller',
     post: 'reseller',
@@ -15,7 +18,10 @@ export default {
     patch: 'reseller',
     delete: 'reseller'
   },
-  tariffs: {
+  clients: {
+    read: 'user/corporate-clients'
+  },
+  tariff: {
     get: 'tariff',
     post: 'tariff',
     put: 'tariff',

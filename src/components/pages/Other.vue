@@ -25,12 +25,12 @@
           </template>
           <span>{{ item.text }}</span>
         </v-tooltip>
-        <!-- <Menu :options="menuOptions" :goto.sync="goto" /> -->
       </v-toolbar>
     </v-app-bar>
 
     <v-row justify="center">
       <VideoTutorials v-if="goto === 'tutorials'" />
+      <Tariffs v-if="goto === 'tariffs'" />
       <Services v-if="goto === 'services'" />
       <ServiceOrders v-if="goto === 'orders'" />
     </v-row>
@@ -43,7 +43,7 @@ export default {
   name: 'Other',
 
   components: {
-    // Menu: () => import('@/components/Menu.vue'),
+    Tariffs: () => import('@/components/pages/other/Tariffs.vue'),
     Services: () => import('@/components/pages/other/Services.vue'),
     ServiceOrders: () => import('@/components/pages/other/ServiceOrders.vue'),
     VideoTutorials: () => import('@/components/pages/other/VideoTutorials.vue')
@@ -55,6 +55,11 @@ export default {
         text: 'Video Tutorials',
         value: 'tutorials',
         icon: '$tutorials'
+      },
+      {
+        text: 'Tariffs',
+        value: 'tariffs',
+        icon: '$tariff'
       },
       {
         text: 'Services',

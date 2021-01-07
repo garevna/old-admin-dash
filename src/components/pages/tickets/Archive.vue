@@ -50,7 +50,7 @@
 
 <script>
 
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'ConnectAddress',
@@ -67,12 +67,12 @@ export default {
   }),
   computed: {
     ...mapState('address-requests', ['tickets']),
-    ...mapState(['rsp']),
+    ...mapState(['users']),
     currentTicket () {
       return this.tickets.find(item => item._id === this.currentTicketId)
     },
     currentRSP () {
-      return this.rsp.find(item => item._id === this.currentTicket.resellerId) || {}
+      return this.currentTicket ? this.user(this.currentTicket.resellerId) : {}
     }
   },
 
@@ -88,6 +88,7 @@ export default {
   },
 
   methods: {
+    ...mapGetters(['user']),
     ...mapMutations('address-requests', {
       updateTicketType: 'UPDATE_TICKET_TYPE'
     }),

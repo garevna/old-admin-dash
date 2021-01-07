@@ -9,21 +9,18 @@ const state = {
 }
 
 const getters = {
-  getClientById (state, getters, rootState) {
-    return id => rootState.rsp.find(reseller => reseller._id === id) || {}
+  user (state, getters, rootState) {
+    return id => rootState.users.find(user => user._id === id)
   },
-  getClientByIndex (state, getters, rootState) {
-    return index => rootState.rsp[index]
+  userName (state, getters, rootState) {
+    return id => getters.user(id) ? getters.user(id).company || getters.user(id).name : 'Unknown'
   },
-  getTicketDate (state) {
-    return (item) => {
-      if (item.createdAt) {
-        return (new Date(item.createdAt - 0)).toISOString().slice(0, 10)
-      } else {
-        const fakeData = Number(item.email) ? Number(item.email) : (Date.now() - Math.round(Math.random() * 30))
-        return (new Date(fakeData)).toISOString().slice(0, 10)
-      }
-    }
+  userRole (state, getters, rootState) {
+    return id => getters.user(id) ? getters.user(id).role : '?'
+  },
+  ticketDate (state) {
+    const fakeDate = Date.now() - Math.round(Math.random() * 30)
+    return (item) => (new Date((item.createdAt - 0) || fakeDate)).toISOString().slice(0, 10)
   }
 }
 
@@ -44,9 +41,9 @@ const actions = {
     if (!response.error) {
       const tickets = response.data
         .map((item, index) => Object.assign({}, item, {
-          createdAt: context.getters.getTicketDate(item),
-          company: context.getters.getClientById(item.resellerId).company,
-          role: context.getters.getClientById(item.resellerId).role
+          createdAt: context.getters.ticketDate(item),
+          company: context.getters.userName(item.resellerId),
+          role: context.getters.userRole(item.resellerId)
         }))
       context.commit('TICKETS', tickets)
     } else {
@@ -64,14 +61,14 @@ const actions = {
     }
   },
 
-  async REMOVE_TIKET (context, payload) {
-    const response = await deleteData(`${endpoints.delete}/${payload.id}`)
+  async REMOVE_TIKET (context, id) {
+    const response = await deleteData(`${endpoints.delete}/${id}`)
 
     if (response.error) {
       context.commit('ERROR', errors.delete, { root: true })
     } else {
       context.commit('MESSAGE', messages.delete, { root: true })
-      context.commit('REMOVE_TIKET', payload.id)
+      context.commit('REMOVE_TIKET', id)
     }
   },
 
