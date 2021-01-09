@@ -115,15 +115,13 @@ export default {
     ...mapActions('tariff', {
       getTariffs: 'GET_TARIFFS'
     }),
-    ...mapActions('common', {
-      fixErrors: 'FIX_DB_ERRORS'
-    }),
     ...mapMutations({
       showMessage: 'MESSAGE',
       showError: 'ERROR'
     }),
     async redirectToBuildingsAPI () {
       const { data, error } = await this._getBuildingsAPI()
+      console.log({ data, error })
       if (!error) {
         window.open(data, '_blank')
         this.showMessage({

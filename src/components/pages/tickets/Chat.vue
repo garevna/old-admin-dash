@@ -64,8 +64,14 @@ export default {
 
   methods: {
     ...mapActions('address-requests', {
-      sendMessageBack: 'SEND_MESSAGE_WITH_CURRENT_TICKET'
+      sendAddressMessage: 'SEND_MESSAGE_WITH_CURRENT_TICKET'
     }),
+    ...mapActions('common', {
+      sendCommonMessage: 'SEND_MESSAGE'
+    }),
+    getMethodName () {
+      return this.ticket.type && !this.ticket.subject ? 'sendAddressMessage' : 'sendCommonMessage'
+    },
     color (emiter) {
       return emiter === 'admin' ? '#333' : this.$vuetify.theme.themes.light.info
     },
@@ -75,7 +81,7 @@ export default {
         emitor: 'admin',
         message: this.messageBack
       }
-      this.sendMessageBack({
+      this[this.getMethodName()]({
         id: this.ticket._id,
         historyElement
       }).then((response) => {
