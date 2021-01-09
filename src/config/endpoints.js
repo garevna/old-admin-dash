@@ -35,7 +35,8 @@ export default {
     delete: 'ticket/connection-request',
     history: 'ticket/connection-request/set-history',
     type: 'ticket/connection-request/set-type',
-    status: 'ticket/connection-request/set-status'
+    status: 'ticket/connection-request/set-status',
+    archive: 'ticket/connection_request/archived'
   },
   connectivity: {
     get: 'ticket/connectivity-research',
@@ -45,7 +46,8 @@ export default {
     delete: 'ticket/connection-request',
     history: 'ticket/connection-request/set-history',
     type: 'ticket/connection-request/set-type',
-    status: 'ticket/connection-request/set-status'
+    status: 'ticket/connection-request/set-status',
+    archive: 'ticket/connection_request/archived'
   },
   common: {
     get: 'ticket/common',
@@ -53,7 +55,8 @@ export default {
     put: 'ticket/common',
     patch: '',
     delete: 'ticket/common',
-    history: 'ticket/common/set-history'
+    history: 'ticket/common/set-history',
+    archive: 'ticket/common/archived'
   },
   services: {
     get: 'service',

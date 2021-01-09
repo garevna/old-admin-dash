@@ -40,7 +40,7 @@
 
       <CommonTikets v-if="goto === 'other'" />
 
-      <ArchiveTikets v-if="goto === 'archive'" />
+      <!-- <ArchiveTikets v-if="goto === 'archive'" /> -->
     </v-card>
   </v-container>
 </template>
@@ -55,8 +55,8 @@ export default {
     // Menu: () => import('@/components/Menu.vue'),
     LeadRequests: () => import('@/components/pages/tickets/LeadRequests.vue'),
     ConnectAddress: () => import('@/components/pages/tickets/ConnectAddress.vue'),
-    CommonTikets: () => import('@/components/pages/tickets/CommonTickets.vue'),
-    ArchiveTikets: () => import('@/components/pages/tickets/Archive.vue')
+    CommonTikets: () => import('@/components/pages/tickets/CommonTickets.vue')
+    // ArchiveTikets: () => import('@/components/pages/tickets/Archive.vue')
   },
 
   data: () => ({
@@ -84,13 +84,13 @@ export default {
         description: 'Requests concerning other issues',
         value: 'other',
         icon: '$common'
-      },
-      {
-        text: 'Archive',
-        description: 'Closed requests that have been moved to archive',
-        value: 'archive',
-        icon: '$archive'
       }
+      // {
+      //   text: 'Archive',
+      //   description: 'Closed requests that have been moved to archive',
+      //   value: 'archive',
+      //   icon: '$archive'
+      // }
     ],
     goto: 'register'
   }),

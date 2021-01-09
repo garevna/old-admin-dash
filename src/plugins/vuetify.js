@@ -39,6 +39,7 @@ export default new Vuetify({
       messageTo: 'mdi-message-arrow-left',
       orders: 'mdi-printer',
       other: 'mdi-folder-table',
+      partner: 'mdi-handshake-outline',
       pdf: 'mdi-file-pdf',
       profile: 'mdi-badge-account-horizontal',
       reject: 'mdi-lan-disconnect',

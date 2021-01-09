@@ -6,37 +6,6 @@
     </v-col>
     <v-col cols="12" lg="6" class="chat">
       <Chat :ticket="currentTicket" :message.sync="messageBack" />
-      <!-- <v-simple-table>
-        <template v-slot:default>
-          <tbody>
-            <tr v-if="currentTicket.message">
-              <td>
-                <v-icon color="primary">$messageFrom</v-icon>
-              </td>
-              <td class="text--black">{{ currentTicket.message }}</td>
-            </tr>
-            <tr
-              v-for="(item, index) in currentTicket.history"
-              :key="index"
-            >
-              <td>
-                <v-icon :color="color(item.emitor)">
-                  {{ item.emitor !== 'admin'? '$messageFrom' : '$messageTo' }}
-                </v-icon>
-              </td>
-              <td>{{ item.message }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <v-card-text>
-        <v-text-field
-          v-model="messageBack"
-          label="Send message back"
-          append-outer-icon="$send"
-          @click:append-outer="sendMessage"
-        />
-      </v-card-text> -->
     </v-col>
   </v-row>
 </template>
@@ -66,18 +35,11 @@ export default {
     },
 
     currentTariff () {
-      const tariff = this.tariffs.find(item => item._id === this.currentTicket.tariffId)
-      return tariff || {}
+      return this.tariffs.find(item => item._id === this.currentTicket.tariffId) || {}
     },
 
     currentUser () {
       return this.getUserById(this.currentTicket.resellerId)
-    }
-  },
-
-  watch: {
-    messageBack (val) {
-      console.log(val)
     }
   },
 

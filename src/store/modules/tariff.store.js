@@ -15,8 +15,6 @@ const mutations = {
   },
   UPDATE_TARIFF_BY_ID: (state, payload) => {
     const index = state.tariffs.findIndex(item => item._id === payload.id)
-    console.log(payload.id, index)
-    console.log(payload.value)
     state.tariffs.splice(index, 1, payload.value)
   },
   ADD_TARIFF: (state, payload) => {

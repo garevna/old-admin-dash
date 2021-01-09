@@ -48,6 +48,11 @@ export default {
       message: true,
       messageType: 'Success',
       messageText: 'Connection request type has been changed'
+    },
+    archive: {
+      message: true,
+      messageType: 'Empty result',
+      messageText: 'There are no archived tickets of this RSP'
     }
   },
   common: {

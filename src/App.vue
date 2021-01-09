@@ -77,6 +77,9 @@ table, .v-data-table,
 .theme--light.v-data-table.v-data-table--fixed-header thead th {
   background: transparent!important;
 }
+.theme--light.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  background: #f0f0f0!important;
+}
 td {
   user-select: text;
 }

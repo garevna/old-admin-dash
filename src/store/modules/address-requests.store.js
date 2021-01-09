@@ -14,7 +14,8 @@ const endpoints = {
 const state = {
   types: ['connection', 'connectivity'],
   type: 'connection',
-  tickets: []
+  tickets: [],
+  archived: []
 }
 
 const mutations = {
@@ -26,6 +27,10 @@ const mutations = {
 
   TICKETS: (state, payload) => {
     state.tickets = payload
+  },
+
+  ARCHIVED: (state, payload) => {
+    state.archived = payload
   },
 
   REMOVE: (state, id) => {
@@ -51,6 +56,27 @@ const actions = {
         distanceFromFootprint: item.distanceToWell
       }))
     commit('TICKETS', tickets)
+    return true
+  },
+
+  async GET_ARCHIVE (context, id) {
+    const response = await getData(`${endpoints[state.type].archive}/${id}`)
+    if (response.error) {
+      context.commit('ERROR', errors.archive, { root: true })
+      return false
+    }
+    if (!response.data || !response.data.length) {
+      context.commit('ARCHIVED', [])
+      // context.commit('MESSAGE', messages.archive, { root: true })
+      return false
+    }
+    const tickets = response.data
+      .map(item => Object.assign({}, item, {
+        createdAt: item.createdAt ? (new Date(item.createdAt - 0)).toISOString().slice(0, 10) : '',
+        footprint: item.locatedInPolygon,
+        distanceFromFootprint: item.distanceToWell
+      }))
+    context.commit('ARCHIVED', tickets)
     return true
   },
 

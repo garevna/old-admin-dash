@@ -31,7 +31,6 @@
         </v-simple-table>
         <v-card-text>
           <v-text-field
-            v-if="ticket.status !== 'archive'"
             v-model="messageBack"
             label="Send message"
             append-outer-icon="$send"
