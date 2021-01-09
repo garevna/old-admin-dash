@@ -37,10 +37,10 @@
         <v-icon>$rsp</v-icon>
       </v-btn>
 
-      <v-btn value="customers">
+      <!-- <v-btn value="customers">
         <span>End Customers</span>
         <v-icon>$customers</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <v-btn value="buildings" @click="redirectToBuildingsAPI">
         <span>Buildings</span>

@@ -35,7 +35,7 @@
             v-model="messageBack"
             label="Send message"
             append-outer-icon="$send"
-            @click:append-outer="$emit('update:message', messageBack)"
+            @click:append-outer="sendMessage"
           />
         </v-card-text>
       </v-expansion-panel-content>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Chat',
@@ -63,25 +63,23 @@ export default {
   },
 
   methods: {
+    ...mapActions('address-requests', {
+      sendMessageBack: 'SEND_MESSAGE_WITH_CURRENT_TICKET'
+    }),
     color (emiter) {
       return emiter === 'admin' ? '#333' : this.$vuetify.theme.themes.light.info
     },
     sendMessage () {
+      const historyElement = {
+        createdAt: Date.now(),
+        emitor: 'admin',
+        message: this.messageBack
+      }
       this.sendMessageBack({
-        id: this.id,
-        historyElement: {
-          createdAt: Date.now(),
-          emitor: 'admin',
-          message: this.messageBack
-        }
+        id: this.ticket._id,
+        historyElement
       }).then((response) => {
-        if (response) {
-          this.currentTicket.history.push({
-            createdAt: Date.now(),
-            emitor: 'admin',
-            message: this.messageBack
-          })
-        }
+        if (response) this.ticket.history.push(historyElement)
         this.messageBack = ''
       })
     }
