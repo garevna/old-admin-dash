@@ -56,8 +56,10 @@ const actions = {
 
     if (response.error) {
       context.commit('ERROR', errors.history, { root: true })
+      return false
     } else {
       context.commit('MESSAGE', messages.history, { root: true })
+      return true
     }
   },
 
