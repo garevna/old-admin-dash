@@ -64,5 +64,8 @@ export default {
     put: 'service',
     patch: '',
     delete: 'service'
+  },
+  serviceOrders: {
+    get: 'agreement'
   }
 }

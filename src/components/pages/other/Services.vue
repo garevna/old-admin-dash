@@ -67,7 +67,7 @@ import { mapState, /* mapMutations, */ mapActions } from 'vuex'
 export default {
   name: 'Services',
   components: {
-    ServiceForm: () => import('@/components/pages/services/ServiceForm')
+    ServiceForm: () => import('@/components/pages/services/ServiceForm.vue')
   },
   data: () => ({
     currentServiceId: null,

@@ -1,15 +1,26 @@
 <template>
-  <v-card flat class="wrap">
-    <v-card flat class="pr-10 pl-10 wrap">
+  <v-card flat class="homefone mb-12 pb-12">
+    <v-card flat class="homefone px-10 py-2 btn-container">
+      <v-btn text @click="back" v-if="currentStep === 2">
+        <v-icon large>mdi-arrow-left-bold</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn text @click="forward" class="btn" v-if="currentStep === 1">
+        <v-icon large>mdi-arrow-right-bold</v-icon>
+      </v-btn>
+    </v-card>
+    <v-card flat class="mx-auto pt-4 pr-10 pl-10 wrap">
       <Step1 v-if="currentStep === 1" :data="data" />
       <Step2 v-if="currentStep === 2" :data="data" />
     </v-card>
-    <v-card flat class="px-10 py-4 btn-container">
-      <!-- <v-card flat class="empty-btn" v-if="currentStep === 1" /> -->
-      <v-btn outlined color="primary" class="btn btn-back" @click="back">
+    <v-card flat class="homefone px-10 py-4 btn-container">
+      <v-btn outlined color="primary" class="btn btn-back" @click="back" v-if="currentStep === 2">
         BACK
       </v-btn>
-      <v-btn color="primary" @click="forward" class="btn">FORWARD</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" @click="forward" class="btn" v-if="currentStep === 1">
+        FORWARD
+      </v-btn>
     </v-card>
   </v-card>
 </template>
@@ -30,13 +41,12 @@
   padding: 10px 50px !important;
 }
 .btn-back {
-  // background-image: url(../../assets/arrow.svg);
   background-position: 15% 48%;
 }
 </style>
 
 <script>
-/* eslint-disable no-unused-vars */
+
 import Step1 from './Step1'
 import Step2 from './Step2'
 export default {

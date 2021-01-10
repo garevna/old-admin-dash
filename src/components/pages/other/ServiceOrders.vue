@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container fluid fill-height class="homefone">
     <v-navigation-drawer
         dark
         app
@@ -47,18 +47,20 @@
 
 <script>
 
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'ServiceOrders',
   components: {
     ServiceDetails: () => import('@/components/pages/service-orders/ServiceDetails.vue')
   },
   data: () => ({
-    serviceOrders: require('@/config/service-orders-mock-data').default,
     currentOrderId: null,
     drawer: true,
     mini: true
   }),
   computed: {
+    ...mapState('service-orders', ['serviceOrders']),
     currentOrder () {
       return this.serviceOrders.find(order => order._id === this.currentOrderId)
     }
@@ -70,10 +72,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions('service-orders', {
+      getOrders: 'GET_SERVICE_ORDERS'
+    }),
     click (item) {
       this.mini = true
       this.currentOrderId = item._id
     }
+  },
+  created () {
+    this.getOrders()
   }
 }
 </script>
