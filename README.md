@@ -1,6 +1,6 @@
-# DGtek portal: admin dashboard
+# Admin dashboard (old)
 
-###### Supervisor dashboard for DGtek Portal project
+###### Primitive supervisor dashboard
 
 [**demo**](https://garevna.github.io/portal-admin-dash/)
 
